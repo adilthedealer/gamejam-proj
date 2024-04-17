@@ -10,15 +10,16 @@ SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("тест")
+pygame.display.set_caption("Bus Runner")
 
 background = pygame.image.load("images/background.png")
+
 
 class Bus(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.image = pygame.image.load("images/bus.png")
-        self.rect = self.image.get_rect()
+        self.rect = self.image.get_rect().inflate(-20, -40)
         self.rect.left = 0  # Start the bus from the left side
         self.rect.centery = SCREEN_HEIGHT // 2
         self.speed = 3
@@ -26,7 +27,10 @@ class Bus(pygame.sprite.Sprite):
     def update(self):
         self.rect.x += self.speed
         if self.rect.left > SCREEN_WIDTH:
-            self.rect.right = 0  # Reset the bus to the left side when it reaches the right
+            self.rect.right = (
+                0  # Reset the bus to the left side when it reaches the right
+            )
+
 
 class Runner(pygame.sprite.Sprite):
     def __init__(self):
@@ -38,7 +42,7 @@ class Runner(pygame.sprite.Sprite):
         self.current_run_image = 0
         self.image = pygame.image.load("images/standing_student.png")
         self.original_image = self.image.copy()
-        self.rect = self.image.get_rect()
+        self.rect = self.image.get_rect().inflate(-20, -40)
         self.rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
         self.speed = 5
         self.running_tick = 0
@@ -47,7 +51,7 @@ class Runner(pygame.sprite.Sprite):
 
     def update(self):
         keys = pygame.key.get_pressed()
-        
+
         dx, dy, angle = 0, 0, None
 
         if keys[pygame.K_LEFT]:
@@ -82,17 +86,24 @@ class Runner(pygame.sprite.Sprite):
         if angle is not None:
             self.image = pygame.transform.rotate(self.original_image, angle)
 
+
 all_sprites = pygame.sprite.Group()
+enemy_sprites = pygame.sprite.Group()
 character = Runner()
 bus = Bus()
 all_sprites.add(character)
 all_sprites.add(bus)
+enemy_sprites.add(bus)
 
 running = True
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+
+    if pygame.sprite.spritecollide(character, enemy_sprites, False):
+        print("Game over!")
+        running = False
 
     screen.blit(background, (0, 0))
 
