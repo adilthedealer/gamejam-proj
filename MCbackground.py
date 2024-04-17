@@ -37,8 +37,8 @@ class Runner(pygame.sprite.Sprite):
         
         # Running animation logic
         directions = {
-            pygame.K_LEFT: (-self.speed, 0, -90),
-            pygame.K_RIGHT: (self.speed, 0, 90),
+            pygame.K_LEFT: (-self.speed, 0, 90),
+            pygame.K_RIGHT: (self.speed, 0, -90),
             pygame.K_UP: (0, -self.speed, 0),
             pygame.K_DOWN: (0, self.speed, 180)
         }
