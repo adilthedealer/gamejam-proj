@@ -24,7 +24,7 @@ class Player:
         ]
         self.current_run_image = 0
         self.image = self.run_images[self.current_run_image]
-        self.rect = self.image.get_rect().inflate(-40, -40)
+        self.rect = self.image.get_rect().inflate(-50, -50)
         self.rect.center = (250, 250)
 
     def move(self, vector):
@@ -42,7 +42,7 @@ class Player:
 class Bus:
     def __init__(self, x, y, speed):
         self.image = pg.image.load("images/bus.png").convert_alpha()
-        self.rect = self.image.get_rect().inflate(-40, -40)
+        self.rect = self.image.get_rect().inflate(-50, -50)
         self.rect.topleft = (x, y)
         self.speed = speed
 
