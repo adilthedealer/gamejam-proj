@@ -15,12 +15,13 @@ pygame.display.set_caption("тест")
 # Загрузка изображения фона
 background = pygame.image.load("images/background.jpg")
 
+
 class Runner(pygame.sprite.Sprite):
-    def init(self):
-        super().init()
+    def __init__(self):
+        super().__init__()
         self.run_images = [
             pygame.image.load("images/running_student1.png"),
-            pygame.image.load("images/running_student2.png")
+            pygame.image.load("images/running_student2.png"),
         ]
         self.current_run_image = 0  # Index to track the current run image
         self.image = pygame.image.load("images/standing_student.png")
@@ -34,13 +35,13 @@ class Runner(pygame.sprite.Sprite):
 
     def update(self):
         keys = pygame.key.get_pressed()
-        
+
         # Running animation logic
         directions = {
             pygame.K_LEFT: (-self.speed, 0, 90),
             pygame.K_RIGHT: (self.speed, 0, -90),
             pygame.K_UP: (0, -self.speed, 0),
-            pygame.K_DOWN: (0, self.speed, 180)
+            pygame.K_DOWN: (0, self.speed, 180),
         }
 
         for key, (dx, dy, angle) in directions.items():
@@ -51,13 +52,16 @@ class Runner(pygame.sprite.Sprite):
                     self.angle = angle
                 self.running_tick += 1
                 if self.running_tick >= self.run_delay:
-                    self.current_run_image = (self.current_run_image + 1) % len(self.run_images)
+                    self.current_run_image = (self.current_run_image + 1) % len(
+                        self.run_images
+                    )
                     self.image = self.run_images[self.current_run_image]
                     self.running_tick = 0
                 break  # Only allow one direction at a time
-        
+
         # Rotate the image
         self.image = pygame.transform.rotate(self.original_image, self.angle)
+
 
 all_sprites = pygame.sprite.Group()
 character = Runner()
