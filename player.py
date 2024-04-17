@@ -1,5 +1,6 @@
 import pygame as pg
 
+
 class Player:
     def __init__(self):
         self.run_images = [
@@ -9,7 +10,7 @@ class Player:
         self.current_run_image = 0
         self.image = self.run_images[self.current_run_image]
         self.rect = self.image.get_rect().inflate(-50, -50)
-        self.rect.center = (250, 250)
+        self.rect.center = (1650, 1750)
 
     def move(self, vector):
         self.rect.x += vector[0]

@@ -9,10 +9,20 @@ pg.init()
 win = pg.display.set_mode((500, 500))
 background = pg.image.load("images/background.png").convert()
 
-player = Player()
-player_rect = pg.Rect(250, 250, player.image.get_width(), player.image.get_height())
-camera = Camera(0, 0, background.get_width(), background.get_height(), player_rect)
+# Adjust the initial position of the player to the center of the window
+initial_player_x = 250
+initial_player_y = 250
 
+player = Player()
+player_rect = pg.Rect(initial_player_x, initial_player_y, player.image.get_width(), player.image.get_height())
+
+# Adjust the initial position of the camera to the lower right corner
+initial_camera_x = background.get_width() - 500
+initial_camera_y = background.get_height() - 500
+
+camera = Camera(
+    initial_camera_x, initial_camera_y, background.get_width(), background.get_height(), player_rect
+)
 
 buses = [Bus(0, 500, 8)]
 
