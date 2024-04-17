@@ -10,7 +10,9 @@ win = pg.display.set_mode((500, 500))
 background = pg.image.load("images/background.png").convert()
 
 player = Player()
-camera = Camera(0, 0)
+player_rect = pg.Rect(250, 250, player.image.get_width(), player.image.get_height())
+camera = Camera(0, 0, background.get_width(), background.get_height(), player_rect)
+
 
 buses = [Bus(0, 500, 8)]
 
@@ -27,6 +29,7 @@ while True:
                 )
 
     vector = [0, 0]
+    camera.move(vector)
 
     kpressed = pg.key.get_pressed()
     if kpressed[pg.K_UP]:
