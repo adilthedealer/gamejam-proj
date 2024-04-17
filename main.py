@@ -12,7 +12,7 @@ background = pg.image.load("images/background.png").convert()
 player = Player()
 camera = Camera(0, 0)
 
-buses = [Bus(0, 250, 3)]
+buses = [Bus(0, 500, 8)]
 
 while True:
     for event in pg.event.get():
@@ -59,4 +59,4 @@ while True:
         bus.draw(win, camera)
 
     pg.display.flip()
-    pg.time.wait(60)
+    pg.time.wait(30)
