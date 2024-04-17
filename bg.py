@@ -4,7 +4,7 @@ import random as rnd
 
 pg.init()
 win = pg.display.set_mode((500, 500))
-background = pg.image.load("images/background.jpg").convert()
+background = pg.image.load("images/background.png").convert()
 ##  Рекомендую использовать .convert(), иначе будет сильно лагать
 
 class cam:
