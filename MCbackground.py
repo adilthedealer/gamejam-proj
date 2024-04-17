@@ -12,7 +12,6 @@ SCREEN_HEIGHT = 600
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("тест")
 
-# Загрузка изображения фона
 background = pygame.image.load("images/background.jpg")
 
 
@@ -57,9 +56,8 @@ class Runner(pygame.sprite.Sprite):
                     )
                     self.image = self.run_images[self.current_run_image]
                     self.running_tick = 0
-                break  # Only allow one direction at a time
+                break  
 
-        # Rotate the image
         self.image = pygame.transform.rotate(self.original_image, self.angle)
 
 
@@ -73,7 +71,6 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    # Отображение фона
     screen.blit(background, (0, 0))
 
     all_sprites.update()
