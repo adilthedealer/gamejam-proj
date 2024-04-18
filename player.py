@@ -24,6 +24,7 @@ class Player:
         self.run_images = [self.fix1, self.fix, self.fix2]
         self.run_images_back = [self.fixb1, self.fixb, self.fixb2]
         self.run_images_right = [self.fixr1, self.fixr, self.fixr2]
+        self.run_images_left = [pg.transform.flip(self.fixr1, True, False), pg.transform.flip(self.fixr, True, False), pg.transform.flip(self.fixr2, True, False)]
         self.current_run_image = 0
         self.image = self.run_images[self.current_run_image]
 
@@ -33,10 +34,12 @@ class Player:
     def move(self, vector):
         if vector[0] > 0:
             self.run_images = self.run_images_right
+        elif vector[0] < 0:
+            self.run_images = self.run_images_left
         elif vector[1] < 0:  # Check if moving upwards
-            self.run_images = [self.fix1, self.fix, self.fix2]  # Use images for movement to the top
-        else:
-            self.run_images = self.run_images
+            self.run_images = [self.fix1, self.fix, self.fix2]
+        elif vector[1] > 0:
+            self.run_images = self.run_images_back
 
         self.rect.x += vector[0]
         self.rect.y += vector[1]
