@@ -6,6 +6,7 @@ from bus import Bus
 from camera import Camera
 from upper_car import Upper_car
 from lower_car import Lower_car
+from trafficlight import TrafficLight
 
 pg.init()
 win = pg.display.set_mode((500, 500))
@@ -35,9 +36,14 @@ camera = Camera(
     player_rect,
 )
 
-buses = [Bus(0, 450, 8)]
+buses = [Bus(0, 400, 8)]
 lower_cars = [Lower_car(400, 1200, "blue")]
-upper_cars = [Upper_car(0, 530, "yellow"), Upper_car(1500, 620, "red"), Upper_car(1600, 720, "blue")]
+upper_cars = [
+    Upper_car(0, 530, "yellow"),
+    Upper_car(1500, 620, "red"),
+    Upper_car(1600, 720, "blue"),
+]
+trafficlight = [TrafficLight(background), TrafficLight(background)]
 while True:
     for event in pg.event.get():
         if event.type == pg.QUIT:
@@ -69,6 +75,8 @@ while True:
         player.update()
         camera.move(vector)
 
+    for tr in trafficlight:
+        tr.update()
     # движение автобуса и реакция игрока на хитбокс
     for bus in buses:
         bus.move()
@@ -84,7 +92,7 @@ while True:
             print("Game over!")
             pg.quit()
             sys.exit()
-    
+
     # движение машины и реакция игрока на хитбокс (нижняя улица)
     for car in lower_cars:
         car.move()
@@ -105,6 +113,10 @@ while True:
 
     for car in lower_cars:
         car.draw(win, camera)
+
+    for tr in trafficlight:
+        tr.draw(background, 225, 450)
+        tr.draw(background, 225, 850)
 
     pg.display.flip()
     pg.time.wait(30)
