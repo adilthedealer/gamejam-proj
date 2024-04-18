@@ -14,25 +14,29 @@ class Bus:
         self.last_stop_time = time.time()
 
     def move(self):
-        if not self.stopped:
-            distance_to_stop = math.sqrt(
-                (self.rect.centerx - self.stop_coordinates[self.current_stop][0]) ** 2 +
-                (self.rect.centery - self.stop_coordinates[self.current_stop][1]) ** 2
-            )
+        # Вычисляем расстояние до текущей остановки
+        distance_to_stop = math.sqrt(
+            (self.rect.centerx - self.stop_coordinates[self.current_stop][0]) ** 2 +
+            (self.rect.centery - self.stop_coordinates[self.current_stop][1]) ** 2
+        )
 
-            if distance_to_stop < 70 and self.speed < 0:
-                self.stopped = True
-                self.last_stop_time = time.time()
+        # Если автобус движется слева направо и достиг координат остановки
+        if not self.stopped and self.speed > 0 and distance_to_stop < 100:
+            self.stopped = True  # Останавливаем автобус
+            self.last_stop_time = time.time()  # Запоминаем время остановки
 
-        elif time.time() - self.last_stop_time >= 30:
-            self.stopped = False
-            self.current_stop = (self.current_stop + 1) % len(self.stop_coordinates)
+        # Если прошло 30 секунд с момента последней остановки
+        elif self.stopped and time.time() - self.last_stop_time >= 30:
+            self.stopped = False  # Снова запускаем движение
+            self.current_stop = (self.current_stop + 1) % len(self.stop_coordinates)  # Переходим к следующей остановке
 
+        # Если автобус не остановлен, продолжаем движение
         if not self.stopped:
             self.rect.x += self.speed
-            if self.rect.left > 1600 or self.rect.right < 0:
-                self.speed = -self.speed
-                self.image = pg.transform.flip(self.image, True, False)
+
+            # Если автобус достиг правого края, перемещаем его в левый край
+            if self.rect.left > 1600:
+                self.rect.right = 0
 
     def draw(self, win, camera):
         win.blit(self.image, (self.rect.x - camera.rect.x, self.rect.y - camera.rect.y))
