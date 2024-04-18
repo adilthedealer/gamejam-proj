@@ -2,7 +2,7 @@ import pygame
 
 class Upper_car:
     def __init__(self, x, y, color):
-        self.image = pygame.image.load("images/" + color + "_car.png")
+        self.image = pygame.image.load("images/cars/" + color + "_car.png")
         self.speed = 8
         self.rect = self.image.get_rect().inflate(-50, -50)
         self.rect.topleft = (x, y)
