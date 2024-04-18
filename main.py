@@ -60,7 +60,7 @@ while True:
     for bus in buses:
         bus.move()
         if bus.rect.colliderect(player.rect):
-            print("Collision occurred!")
+            print("Game over!")
             pg.quit()
             sys.exit()
 
