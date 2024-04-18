@@ -36,7 +36,7 @@ camera = Camera(
     player_rect,
 )
 
-buses = [Bus(0, 400, 8)]
+buses = [Bus(0, 450, 8)]
 lower_cars = [Lower_car(400, 1200, "blue")]
 upper_cars = [
     Upper_car(0, 530, "yellow"),
