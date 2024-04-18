@@ -9,7 +9,7 @@ from lower_car import Lower_car
 
 pg.init()
 win = pg.display.set_mode((500, 500))
-background = pg.image.load("images/background.png").convert()
+background = pg.image.load("images/newbg.png").convert()
 
 # Adjust the initial position of the player to the center of the window
 initial_player_x = 250
