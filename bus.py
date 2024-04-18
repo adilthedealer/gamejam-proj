@@ -4,7 +4,7 @@ import pygame as pg
 class Bus:
     def __init__(self, x, y, speed):
         self.image = pg.image.load("images/bus.png").convert_alpha()
-        self.rect = self.image.get_rect().inflate(-50, -50)
+        self.rect = self.image.get_rect().inflate(-50, -80)
         self.rect.topleft = (x, y)
         self.speed = speed
 

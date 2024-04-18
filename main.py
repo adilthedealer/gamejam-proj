@@ -4,6 +4,8 @@ import random as rnd
 from player import Player
 from bus import Bus
 from camera import Camera
+from upper_car import Upper_car
+from lower_car import Lower_car
 
 pg.init()
 win = pg.display.set_mode((500, 500))
@@ -14,18 +16,28 @@ initial_player_x = 250
 initial_player_y = 250
 
 player = Player()
-player_rect = pg.Rect(initial_player_x, initial_player_y, player.image.get_width(), player.image.get_height())
+player_rect = pg.Rect(
+    initial_player_x,
+    initial_player_y,
+    player.image.get_width(),
+    player.image.get_height(),
+)
 
 # Adjust the initial position of the camera to the lower right corner
 initial_camera_x = background.get_width() - 500
 initial_camera_y = background.get_height() - 500
 
 camera = Camera(
-    initial_camera_x, initial_camera_y, background.get_width(), background.get_height(), player_rect
+    initial_camera_x,
+    initial_camera_y,
+    background.get_width(),
+    background.get_height(),
+    player_rect,
 )
 
-buses = [Bus(0, 500, 8)]
-
+buses = [Bus(0, 450, 8)]
+lower_cars = [Lower_car(400, 1200, "blue")]
+upper_cars = [Upper_car(0, 530, "yellow"), Upper_car(1500, 620, "red"), Upper_car(1600, 720, "blue")]
 while True:
     for event in pg.event.get():
         if event.type == pg.QUIT:
@@ -57,9 +69,26 @@ while True:
         player.update()
         camera.move(vector)
 
+    # движение автобуса и реакция игрока на хитбокс
     for bus in buses:
         bus.move()
         if bus.rect.colliderect(player.rect):
+            print("Game over!")
+            pg.quit()
+            sys.exit()
+
+    # движение машины и реакция игрока на хитбокс (верхняя улица)
+    for car in upper_cars:
+        car.move()
+        if car.rect.colliderect(player.rect):
+            print("Game over!")
+            pg.quit()
+            sys.exit()
+    
+    # движение машины и реакция игрока на хитбокс (нижняя улица)
+    for car in lower_cars:
+        car.move()
+        if car.rect.colliderect(player.rect):
             print("Game over!")
             pg.quit()
             sys.exit()
@@ -70,6 +99,12 @@ while True:
 
     for bus in buses:
         bus.draw(win, camera)
+
+    for car in upper_cars:
+        car.draw(win, camera)
+
+    for car in lower_cars:
+        car.draw(win, camera)
 
     pg.display.flip()
     pg.time.wait(30)
