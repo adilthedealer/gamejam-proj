@@ -1,4 +1,5 @@
 import pygame as pg
+from trafficlight import TrafficLight
 import sys
 import random as rnd
 from player import Player
@@ -38,6 +39,8 @@ camera = Camera(
 buses = [Bus(0, 450, 8)]
 lower_cars = [Lower_car(400, 1200, "blue")]
 upper_cars = [Upper_car(0, 530, "yellow"), Upper_car(1500, 620, "red"), Upper_car(1600, 720, "blue")]
+traffic_light = TrafficLight(win)
+traffic_light1 = TrafficLight(win)
 while True:
     for event in pg.event.get():
         if event.type == pg.QUIT:
@@ -52,6 +55,7 @@ while True:
 
     vector = [0, 0]
     camera.move(vector)
+
 
     kpressed = pg.key.get_pressed()
     if kpressed[pg.K_UP]:
@@ -69,6 +73,7 @@ while True:
         player.update()
         camera.move(vector)
 
+    traffic_light.update()
     # движение автобуса и реакция игрока на хитбокс
     for bus in buses:
         bus.move()
@@ -105,6 +110,9 @@ while True:
 
     for car in lower_cars:
         car.draw(win, camera)
+
+    traffic_light.draw(background, 200, 450)
+    traffic_light.draw(background, 225, 860)
 
     pg.display.flip()
     pg.time.wait(30)
