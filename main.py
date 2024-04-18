@@ -87,7 +87,7 @@ while True:
 
     # движение машины и реакция игрока на хитбокс (верхняя улица)
     for car in upper_cars:
-        car.move()
+        car.move(trafficlight[0])  # Передаём объект светофора в метод move
         if car.rect.colliderect(player.rect):
             print("Game over!")
             pg.quit()
@@ -95,7 +95,7 @@ while True:
 
     # движение машины и реакция игрока на хитбокс (нижняя улица)
     for car in lower_cars:
-        car.move()
+        car.move(trafficlight[1])  # Передаём объект светофора в метод move
         if car.rect.colliderect(player.rect):
             print("Game over!")
             pg.quit()
