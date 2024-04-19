@@ -93,7 +93,9 @@ while True:
     for bus in buses:
         bus.move()
         if bus.rect.colliderect(player.rect):
-            print("Game over!")
+            win.blit(gameover, ((win.get_width() - gameover.get_width()) // 2, (win.get_height() - gameover.get_height()) // 2))
+            pg.display.update()
+            time.sleep(4)
             pg.quit()
             sys.exit()
 
@@ -101,7 +103,9 @@ while True:
     for car in upper_cars:
         car.move(trafficlight[0])  # Передаём объект светофора в метод move
         if car.rect.colliderect(player.rect):
-            print("Game over!")
+            win.blit(gameover, ((win.get_width() - gameover.get_width()) // 2, (win.get_height() - gameover.get_height()) // 2))
+            pg.display.update()
+            time.sleep(4)
             pg.quit()
             sys.exit()
 
