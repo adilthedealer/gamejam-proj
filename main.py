@@ -49,7 +49,7 @@ upper_cars = [
 trafficlight = [TrafficLight(background), TrafficLight(background)]
 
 # Создайте объект NPC
-npc = NPC()
+npc = [NPC(900, 1500, 4), NPC(150, 900, 1)]
 
 while True:
     for event in pg.event.get():
@@ -82,9 +82,9 @@ while True:
         player.update()
         camera.move(vector)
 
-    # Двигаем NPC
-    npc.move()
-    npc.update()
+    for np in npc:
+        np.move()
+        np.update()
 
     for tr in trafficlight:
         tr.update()
@@ -132,7 +132,8 @@ while True:
     for car in lower_cars:
         car.draw(win, camera)
 
-    npc.draw(win, camera)  # Рисуем NPC
+    for np in npc:
+        np.draw(win, camera)  # Рисуем NPC
 
     for tr in trafficlight:
         tr.draw(background, 225, 450)
