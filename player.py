@@ -31,18 +31,37 @@ class Player:
         self.rect = self.image.get_rect().inflate(-50, -50)
         self.rect.center = initial_pos
 
-    def move(self, vector):
-        if vector[0] > 0:
-            self.run_images = self.run_images_right
-        elif vector[0] < 0:
-            self.run_images = self.run_images_left
-        elif vector[1] < 0:  # Check if moving upwards
-            self.run_images = [self.fix1, self.fix, self.fix2]
-        elif vector[1] > 0:
-            self.run_images = self.run_images_back
+        self.allowed_rects = [
+            pg.Rect(1599, 1799, 103, 48),
+            pg.Rect(1698, 1531, 86, 469),
+            pg.Rect(863, 1452, 835, 79),
+            pg.Rect(863, 888, 76, 568),
+            pg.Rect(142, 886, 796, 80),
+            pg.Rect(141, 419, 72, 467),
+            pg.Rect(212, 419, 960, 67)
+        ]
 
-        self.rect.x += vector[0]
-        self.rect.y += vector[1]
+    def move(self, vector):
+    # Calculate the new position
+        new_rect = self.rect.move(vector)
+
+        # Check if the new position is within any allowed rectangle
+        for rect in self.allowed_rects:
+            if new_rect.colliderect(rect):
+                if vector[0] > 0:
+                    self.run_images = self.run_images_right
+                elif vector[0] < 0:
+                    self.run_images = self.run_images_left
+                elif vector[1] < 0:  # Check if moving upwards
+                    self.run_images = [self.fix1, self.fix, self.fix2]
+                elif vector[1] > 0:
+                    self.run_images = self.run_images_back
+
+                self.rect.x += vector[0]
+                self.rect.y += vector[1]
+                break
+
+
 
     def update(self):
         self.current_run_image = (self.current_run_image + 1) % len(self.run_images)
