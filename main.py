@@ -107,6 +107,8 @@ while True:
     for car in lower_cars:
         car.move(trafficlight[1])  # Передаём объект светофора в метод move
         if car.rect.colliderect(player.rect):
+            gameover = pg.image.load("images/wasted.png")
+            
             print("Game over!")
             pg.quit()
             sys.exit()

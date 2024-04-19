@@ -5,7 +5,7 @@ class NPC:
     def __init__(self):
         try:
             # Forward movement (movement to the top)
-            self.fix1 = pg.transform.scale(pg.image.load("images/npcside/npc_side_stand.png").convert_alpha(), (35, 35))
+            self.fix1 = pg.transform.scale(pg.image.load("images/npc_front/npc_frontstand.png").convert_alpha(), (35, 35))
             self.fix2 = pg.transform.scale(pg.image.load("images/npcside/npc_side1.png").convert_alpha(), (35, 35))
             self.fix = pg.transform.scale(pg.image.load("images/npcside/npc_side2.png").convert_alpha(), (35, 35))
 
@@ -24,7 +24,7 @@ class NPC:
 
         self.run_images = [self.fix1, self.fix, self.fix2]
         self.run_images_back = [self.fixb1, self.fixb, self.fixb2]
-        self.run_images_right = [self.fixr1, self.fixr, self.fixr2]
+        self.run_images_right = [self.fixr, self.fixr1, self.fixr2]
         self.run_images_left = [pg.transform.flip(self.fixr1, True, False), pg.transform.flip(self.fixr, True, False), pg.transform.flip(self.fixr2, True, False)]
         self.current_run_image = 0
         self.image = self.run_images[self.current_run_image]
