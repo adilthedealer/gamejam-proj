@@ -154,8 +154,9 @@ while True:
             pg.quit()
             sys.exit()
 
-    for gr in gra:
-        if gr.rect.colliderect(player.rect):
+    # проработка хитбокса и реакция игрока на столкновение с бабкой (миниигра)
+    for grandma in gra:
+        if grandma.rect.colliderect(player.rect):
             win.blit(
                 gameover,
                 (
