@@ -31,6 +31,7 @@ class Player:
         self.rect = self.image.get_rect().inflate(-50, -50)
         self.rect.center = initial_pos
 
+        # координаты тротуара ниже ...
         self.allowed_rects = [
             pg.Rect(1599, 1799, 103, 48),
             pg.Rect(1698, 1531, 86, 469),
