@@ -35,7 +35,7 @@ class Player:
         self.allowed_rects = [
             pg.Rect(1599, 1799, 103, 48),
             pg.Rect(1698, 1531, 86, 469),
-            pg.Rect(863, 1452, 835, 79),
+            pg.Rect(863, 1452, 922, 79),
             pg.Rect(863, 888, 76, 568),
             pg.Rect(142, 886, 796, 80),
             pg.Rect(141, 419, 72, 467),
