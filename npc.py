@@ -29,8 +29,11 @@ class NPC:
         self.current_run_image = 0
         self.image = self.run_images[self.current_run_image]
 
+        # self.move_delay = 60  # Number of frames to wait before moving again
+        # self.frames_since_last_move = 0
+
         self.rect = self.image.get_rect().inflate(-50, -50)
-        self.rect.center = (1600, 1800)  # Начальная позиция NPC
+        self.rect.center = (900, 1500)  # Начальная позиция NPC
 
         # Рамки, в которых NPC может двигаться
         self.allowed_rects = [
@@ -43,27 +46,30 @@ class NPC:
             pg.Rect(212, 419, 960, 67)
         ]
 
-        self.speed = 2  # Скорость движения NPC
+        self.speed = 4  # Скорость движения NPC
 
     def move(self):
-        # Выбираем случайное направление для движения NPC
+        # # Check if enough frames have passed since the last move
+        # if self.frames_since_last_move < self.move_delay:
+        #     self.frames_since_last_move += 1
+        #     return
+
+        # # Reset frame counter
+        # self.frames_since_last_move = 0
+
+        # Choose a random direction
         direction = random.choice(["up", "down", "left", "right"])
-        new_rect = self.rect.move(0, 0)  # Начальное значение нового прямоугольника
+        new_rect = self.rect.move(0, 0)  # Initialize new rectangle
 
-        # Проверяем, что новая позиция находится внутри разрешенных рамок
-        while True:
-            if direction == "up":
-                new_rect.y -= self.speed
-            elif direction == "down":
-                new_rect.y += self.speed
-            elif direction == "left":
-                new_rect.x -= self.speed
-            elif direction == "right":
-                new_rect.x += self.speed
+        # Move NPC in the chosen direction
+        # if direction == "left":
+        #     new_rect.x -= self.speed
+        if direction == "right":
+            new_rect.x += self.speed
 
-            if any(new_rect.colliderect(rect) for rect in self.allowed_rects):
-                break
-
+        # Check if the new position is within the allowed rects
+        if any(new_rect.colliderect(rect) for rect in self.allowed_rects):
+            self.rect = new_rect
             # Если новая позиция выходит за пределы рамок, выбираем новое направление
             direction = random.choice(["up", "down", "left", "right"])
 
