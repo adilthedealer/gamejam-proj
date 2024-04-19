@@ -8,9 +8,10 @@ from camera import Camera
 from upper_car import Upper_car
 from lower_car import Lower_car
 from trafficlight import TrafficLight
-from npc import NPC  
+from npc import NPC
 from npcdown import NPCDown
 from npcup import NPCUp
+from grandma import Grandma
 
 pg.init()
 win = pg.display.set_mode((500, 500))
@@ -51,9 +52,10 @@ upper_cars = [
 trafficlight = [TrafficLight(background), TrafficLight(background)]
 
 # Создайте объект NPC
-npc = [NPC(900, 1500, 4, ''), NPC(150, 900, 1, '')]
+npc = [NPC(900, 1500, 4, ""), NPC(150, 900, 1, "")]
 npcdown = [NPCDown(1750, 1540, 4, "3")]
 npcup = [NPCUp(900, 1600, 1.5, "2")]
+gra = [Grandma(887, 1148)]
 
 while True:
     for event in pg.event.get():
@@ -89,7 +91,7 @@ while True:
     for np in npc:
         np.move()
         np.update()
-    
+
     for npcd in npcdown:
         npcd.move()
         npcd.update()
@@ -98,6 +100,9 @@ while True:
         npcu.move()
         npcu.update()
 
+    for grandma in gra:
+        grandma.move()
+
     for tr in trafficlight:
         tr.update()
 
@@ -105,7 +110,13 @@ while True:
     for bus in buses:
         bus.move()
         if bus.rect.colliderect(player.rect):
-            win.blit(gameover, ((win.get_width() - gameover.get_width()) // 2, (win.get_height() - gameover.get_height()) // 2))
+            win.blit(
+                gameover,
+                (
+                    (win.get_width() - gameover.get_width()) // 2,
+                    (win.get_height() - gameover.get_height()) // 2,
+                ),
+            )
             pg.display.update()
             time.sleep(4)
             pg.quit()
@@ -115,7 +126,13 @@ while True:
     for car in upper_cars:
         car.move(trafficlight[0])  # Передаём объект светофора в метод move
         if car.rect.colliderect(player.rect):
-            win.blit(gameover, ((win.get_width() - gameover.get_width()) // 2, (win.get_height() - gameover.get_height()) // 2))
+            win.blit(
+                gameover,
+                (
+                    (win.get_width() - gameover.get_width()) // 2,
+                    (win.get_height() - gameover.get_height()) // 2,
+                ),
+            )
             pg.display.update()
             time.sleep(4)
             pg.quit()
@@ -125,7 +142,27 @@ while True:
     for car in lower_cars:
         car.move(trafficlight[1])  # Передаём объект светофора в метод move
         if car.rect.colliderect(player.rect):
-            win.blit(gameover, ((win.get_width() - gameover.get_width()) // 2, (win.get_height() - gameover.get_height()) // 2))
+            win.blit(
+                gameover,
+                (
+                    (win.get_width() - gameover.get_width()) // 2,
+                    (win.get_height() - gameover.get_height()) // 2,
+                ),
+            )
+            pg.display.update()
+            time.sleep(4)
+            pg.quit()
+            sys.exit()
+
+    for gr in gra:
+        if gr.rect.colliderect(player.rect):
+            win.blit(
+                gameover,
+                (
+                    (win.get_width() - gameover.get_width()) // 2,
+                    (win.get_height() - gameover.get_height()) // 2,
+                ),
+            )
             pg.display.update()
             time.sleep(4)
             pg.quit()
@@ -145,13 +182,16 @@ while True:
         car.draw(win, camera)
 
     for np in npc:
-        np.draw(win, camera)  # Рисуем NPC
+        np.draw(win, camera)
 
     for npcd in npcdown:
         npcd.draw(win, camera)
 
     for npcu in npcup:
         npcu.draw(win, camera)
+
+    for gr in gra:
+        gr.draw(win, camera)
 
     for tr in trafficlight:
         tr.draw(background, 225, 450)
