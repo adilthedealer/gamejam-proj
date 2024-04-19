@@ -7,6 +7,7 @@ from camera import Camera
 from upper_car import Upper_car
 from lower_car import Lower_car
 from trafficlight import TrafficLight
+from npc import NPC  # Импортируйте класс NPC из соответствующего файла
 
 pg.init()
 win = pg.display.set_mode((500, 500))
@@ -44,6 +45,10 @@ upper_cars = [
     Upper_car(1600, 720, "blue"),
 ]
 trafficlight = [TrafficLight(background), TrafficLight(background)]
+
+# Создайте объект NPC
+npc = NPC()
+
 while True:
     for event in pg.event.get():
         if event.type == pg.QUIT:
@@ -75,8 +80,13 @@ while True:
         player.update()
         camera.move(vector)
 
+    # Двигаем NPC
+    npc.move()
+    npc.update()
+
     for tr in trafficlight:
         tr.update()
+
     # движение автобуса и реакция игрока на хитбокс
     for bus in buses:
         bus.move()
@@ -113,6 +123,8 @@ while True:
 
     for car in lower_cars:
         car.draw(win, camera)
+
+    npc.draw(win, camera)  # Рисуем NPC
 
     for tr in trafficlight:
         tr.draw(background, 225, 450)
