@@ -8,7 +8,9 @@ from camera import Camera
 from upper_car import Upper_car
 from lower_car import Lower_car
 from trafficlight import TrafficLight
-from npc import NPC  # Импортируйте класс NPC из соответствующего файла
+from npc import NPC  
+from npcdown import NPCDown
+from npcup import NPCUp
 
 pg.init()
 win = pg.display.set_mode((500, 500))
@@ -49,7 +51,9 @@ upper_cars = [
 trafficlight = [TrafficLight(background), TrafficLight(background)]
 
 # Создайте объект NPC
-npc = [NPC(900, 1500, 4), NPC(150, 900, 1)]
+npc = [NPC(900, 1500, 4, ''), NPC(150, 900, 1, '')]
+npcdown = [NPCDown(1750, 1540, 4, "3")]
+npcup = [NPCUp(900, 1600, 1.5, "2")]
 
 while True:
     for event in pg.event.get():
@@ -85,6 +89,14 @@ while True:
     for np in npc:
         np.move()
         np.update()
+    
+    for npcd in npcdown:
+        npcd.move()
+        npcd.update()
+
+    for npcu in npcup:
+        npcu.move()
+        npcu.update()
 
     for tr in trafficlight:
         tr.update()
@@ -134,6 +146,12 @@ while True:
 
     for np in npc:
         np.draw(win, camera)  # Рисуем NPC
+
+    for npcd in npcdown:
+        npcd.draw(win, camera)
+
+    for npcu in npcup:
+        npcu.draw(win, camera)
 
     for tr in trafficlight:
         tr.draw(background, 225, 450)

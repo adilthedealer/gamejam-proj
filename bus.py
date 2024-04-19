@@ -22,7 +22,7 @@ class Bus:
 
         # Если автобус движется слева направо и достиг координат остановки
         if not self.stopped and self.speed > 0 and distance_to_stop < 100:
-            self.stopped = True  # Останавливаем автобус
+            self.stopped = True # Останавливаем автобус
             self.last_stop_time = time.time()  # Запоминаем время остановки
 
         # Если прошло 30 секунд с момента последней остановки
