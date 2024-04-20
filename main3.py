@@ -1,38 +1,34 @@
 import pygame as pg
 import sys
-import time
-import random as rnd
 from player import Player
 from camera import Camera
-def main():
+
+
+def main3():
     pg.init()
     win = pg.display.set_mode((500, 500))
     background = pg.image.load("images/BG3.png").convert()
-    gameover = pg.image.load("images/wasted.png")
 
-    # Adjust the initial position of the player to the center of the window
+    # Adjust the initial position of the player
     initial_player_x = 250
     initial_player_y = 250
 
     player = Player()
-    player_rect = pg.Rect(
-        initial_player_x,
-        initial_player_y,
-        player.image.get_width(),
-        player.image.get_height(),
-    )
+    player.rect.center = (initial_player_x, initial_player_y)
 
-    # Adjust the initial position of the camera to the lower right corner
-    initial_camera_x = background.get_width() - 500
-    initial_camera_y = background.get_height() - 500
+    # Adjust the initial position of the camera
+    initial_camera_x = 0
+    initial_camera_y = 0
 
     camera = Camera(
         initial_camera_x,
         initial_camera_y,
         background.get_width(),
         background.get_height(),
-        player_rect,
+        player.rect,
     )
+
+    clock = pg.time.Clock()
 
     while True:
         for event in pg.event.get():
@@ -60,12 +56,11 @@ def main():
             camera.move(vector)
 
         win.fill((255, 255, 255))
-        win.blit(background, (-camera.rect[0], -camera.rect[1]))
+        win.blit(background, (-camera.rect.x, -camera.rect.y))
         player.draw(win, camera)
 
         pg.display.flip()
-        pg.time.wait(30)
+        clock.tick(30)
 
 
-main()
-
+main3()
