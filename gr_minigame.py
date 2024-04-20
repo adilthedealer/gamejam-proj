@@ -54,14 +54,14 @@ def gr_minigame():
 
         kpressed = pg.key.get_pressed()
         if kpressed[pg.K_UP]:
-            vector[1] -= 3
+            vector[1] -= 2
         elif kpressed[pg.K_DOWN]:
-            vector[1] += 3
+            vector[1] += 2
 
         if kpressed[pg.K_LEFT]:
-            vector[0] -= 3
+            vector[0] -= 2
         elif kpressed[pg.K_RIGHT]:
-            vector[0] += 3
+            vector[0] += 2
 
         if vector != [0, 0]:
             mcgrandma.move(vector)
@@ -75,6 +75,7 @@ def gr_minigame():
 
         if mcgrandma.rect.y >= 884:
             exit_minigame = True
+
 
         # движение машины и реакция игрока на хитбокс (верхняя улица)
         for car in upper_cars:
@@ -95,6 +96,9 @@ def gr_minigame():
         for tr in trafficlight:
             tr.draw(background, 225, 450)
             tr.draw(background, 225, 850)
+
+        for car in upper_cars:
+            car.draw(win, camera)
 
         pg.display.flip()
         pg.time.wait(30)
