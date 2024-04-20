@@ -50,10 +50,12 @@ def main3():
         elif kpressed[pg.K_RIGHT]:
             vector[0] += 3
 
+
         if vector != [0, 0]:
-            player.move(vector)
+            player.move(vector)  # Pass the vector to the move method
             player.update()
             camera.move(vector)
+
 
         win.fill((255, 255, 255))
         win.blit(background, (-camera.rect.x, -camera.rect.y))

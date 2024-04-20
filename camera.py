@@ -23,11 +23,12 @@ class Camera:
         elif new_y > self.bg_height - self.rect.height:
             new_y = self.bg_height - self.rect.height
 
+        # Calculate the offset of the camera movement
+        offset_x = new_x - self.rect.x
+        offset_y = new_y - self.rect.y
+
         # Update the camera's position
         self.rect.topleft = (new_x, new_y)
 
         # Adjust player's position to keep it centered
-        self.player_rect.topleft = (
-            self.player_rect.x + (new_x - self.rect.x),
-            self.player_rect.y + (new_y - self.rect.y),
-        )
+        self.player_rect.move_ip(offset_x, offset_y)
