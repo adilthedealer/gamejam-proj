@@ -59,7 +59,7 @@ def main():
     npcdown = [NPCDown(1750, 1540, 4, "3"), NPCDown(871, 916, 0.5, "2")]
     npcup = [NPCUp(900, 1600, 1.5, "3")]
     npcleft = [NPCLeft(1770, 1499, 2.3, "2"), NPCLeft(1150, 433, 0.5, "")]
-    gra = [Grandma(887, 1148)]
+    gra = [Grandma(154, 400)]
 
     while True:
         for event in pg.event.get():
