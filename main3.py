@@ -72,7 +72,7 @@ def main3():
                 ),
             )
             pg.display.update()
-            time.sleep(4)
+            time.sleep(10)
             pg.quit()
             sys.exit()
 
