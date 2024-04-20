@@ -2,18 +2,18 @@ import pygame as pg
 import sys
 from player import Player
 from camera import Camera
-
+from player1 import Player1
 
 def main3():
     pg.init()
     win = pg.display.set_mode((500, 500))
-    background = pg.image.load("images/BG3.png").convert()
+    background = pg.image.load("images/newBG3.png").convert()
 
     # Adjust the initial position of the player
     initial_player_x = 250
     initial_player_y = 250
 
-    player = Player()
+    player = Player1()
     player.rect.center = (initial_player_x, initial_player_y)
 
     # Adjust the initial position of the camera

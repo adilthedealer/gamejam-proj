@@ -172,6 +172,8 @@ def main():
             if grandma.rect.colliderect(player.rect):
                 gr_minigame()
                 gra.clear()
+                player.reset_position()
+                camera.rect.center = player.rect.center
                 # mc_grandma.move()
                 # mc_grandma.update()
                 
