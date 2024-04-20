@@ -137,7 +137,7 @@ def main():
 
         # движение машины и реакция игрока на хитбокс (верхняя улица)
         for car in upper_cars:
-            car.move(trafficlight[0])  # Передаём объект светофора в метод move
+            car.move(trafficlight[0])  
             if car.rect.colliderect(player.rect):
                 win.blit(
                     gameover,
@@ -153,7 +153,7 @@ def main():
 
         # движение машины и реакция игрока на хитбокс (нижняя улица)
         for car in lower_cars:
-            car.move(trafficlight[1])  # Передаём объект светофора в метод move
+            car.move(trafficlight[1]) 
             if car.rect.colliderect(player.rect):
                 win.blit(
                     gameover,
