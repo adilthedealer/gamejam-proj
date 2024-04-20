@@ -2,6 +2,7 @@ import pygame as pg
 import sys
 import time
 import random as rnd
+import subprocess
 from gr_minigame import gr_minigame
 from player import Player
 from bus import Bus
@@ -14,6 +15,7 @@ from npcdown import NPCDown
 from npcup import NPCUp
 from npcleft import NPCLeft
 from grandma import Grandma
+
 
 def draw_pause_menu(win):
     # Draw a transparent green overlay
@@ -160,6 +162,18 @@ def main1():
                 time.sleep(4)
                 pg.quit()
                 sys.exit()
+            elif bus.distance_to_stop(player) <= 65:
+                win.blit(
+                    pg.image.load("images/levels/level2.png"),
+                    (
+                        (win.get_width() - gameover.get_width()) // 2,
+                        (win.get_height() - gameover.get_height()) // 2,
+                    ),
+                )
+                pg.display.update()
+                time.sleep(2)
+                subprocess.run(["python", "main2.py"])
+                pg.quit()
 
         # Move upper cars and check collision with player
         for car in upper_cars:

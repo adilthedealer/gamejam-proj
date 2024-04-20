@@ -1,19 +1,22 @@
 import pygame as pg
 import sys
+import time
 from camera import Camera
 from player1 import Player1
+from bus import Bus
+
 
 def main3():
     pg.init()
     win = pg.display.set_mode((500, 500))
-    background = pg.image.load("images/BG3.png").convert()
-
+    background = pg.image.load("images/BG3.png").convert_alpha()
+    gameover = pg.image.load("images/story/level3story.png")
     # Adjust the initial position of the player
-    initial_player_x = 250
-    initial_player_y = 250
+    # initial_player_x = 250
+    # initial_player_y = 250
 
-    player = Player1()
-    player.rect.center = (initial_player_x, initial_player_y)
+    player = Player1(50, 1072)
+    player.rect.center = (player.rect.centerx, player.rect.centery)
 
     # Adjust the initial position of the camera
     initial_camera_x = 0
@@ -27,9 +30,11 @@ def main3():
         player.rect,
     )
 
+    # buses = [Bus(868, 382, 8)]
     clock = pg.time.Clock()
 
-    while True:
+    travel_allowed = True
+    while travel_allowed:
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 pg.quit()
@@ -58,10 +63,24 @@ def main3():
             camera.rect.center = player.rect.center
             camera.move([0, 0])
 
+        if player.distance_traveled >= 2000000:
+            win.blit(
+                gameover,
+                (
+                    (win.get_width() - gameover.get_width()) // 2,
+                    (win.get_height() - gameover.get_height()) // 2,
+                ),
+            )
+            pg.display.update()
+            time.sleep(4)
+            pg.quit()
+            sys.exit()
 
         win.fill((255, 255, 255))
         win.blit(background, (-camera.rect.x, -camera.rect.y))
         player.draw(win, camera)
+
+        print(player.distance_traveled)
 
         pg.display.flip()
         clock.tick(30)

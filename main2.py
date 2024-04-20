@@ -1,6 +1,7 @@
 import pygame as pg
 import sys
 import time
+import subprocess
 import random as rnd
 from player import Player
 from bus import Bus
@@ -16,6 +17,22 @@ from grandma import Grandma
 from luke import Luke
 from luzha import Luzha
 from kapli import Raindrop
+
+def draw_pause_menu(win):
+    # Draw a transparent green overlay
+    overlay = pg.Surface((500, 500), pg.SRCALPHA)
+    overlay.fill((0, 255, 0, 128))  # Transparent green color
+    win.blit(overlay, (0, 0))
+
+    # Draw pause menu options
+    font = pg.font.SysFont(None, 30)
+    text_continue = font.render("Continue", True, (255, 255, 255))
+    text_settings = font.render("Settings", True, (255, 255, 255))
+    text_exit = font.render("Exit", True, (255, 255, 255))
+
+    win.blit(text_continue, (200, 200))
+    win.blit(text_settings, (200, 250))
+    win.blit(text_exit, (200, 300))
 
 def create_raindrops(num_raindrops):
     raindrops = []
@@ -33,7 +50,7 @@ def update_raindrops(raindrops):
     for raindrop in raindrops:
         raindrop.fall()
 
-def main():
+def main2():
     pg.init()
     win = pg.display.set_mode((500, 500))
     background = pg.image.load("images/BGrain.png").convert()
@@ -81,6 +98,8 @@ def main():
 
     raindrops = create_raindrops(100)  # Adjust the number of raindrops as needed
 
+    is_paused = False
+
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT:
@@ -96,6 +115,13 @@ def main():
                             rnd.choice([-3, 3]),
                         )
                     )
+                elif event.key == pg.K_ESCAPE:
+                    is_paused = True
+
+        if is_paused:
+            draw_pause_menu(win)
+            pg.display.flip()
+            continue
 
         vector = [0, 0]
         camera.move(vector)
@@ -155,6 +181,18 @@ def main():
                 time.sleep(4)
                 pg.quit()
                 sys.exit()
+            elif bus.distance_to_stop(player) <= 65:
+                win.blit(
+                    pg.image.load("images/levels/level3.png"),
+                    (
+                        (win.get_width() - gameover.get_width()) // 2,
+                        (win.get_height() - gameover.get_height()) // 2,
+                    ),
+                )
+                pg.display.update()
+                time.sleep(2)
+                subprocess.run(["python", "main3.py"])
+                pg.quit()
 
         for car in upper_cars:
             car.move(trafficlight[0])
@@ -253,4 +291,4 @@ def main():
         pg.time.wait(30)
 
 
-main()
+main2()

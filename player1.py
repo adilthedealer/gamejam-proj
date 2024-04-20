@@ -1,7 +1,7 @@
 import pygame as pg
-
+import math 
 class Player1:
-    def __init__(self, initial_pos=(1600, 1800)):
+    def __init__(self, x, y):
         try:
             # Forward movement (movement to the top)
             self.fix1 = pg.transform.scale(pg.image.load("images/mc_run.png").convert_alpha(), (35, 35))
@@ -29,15 +29,18 @@ class Player1:
         self.image = self.run_images[self.current_run_image]
 
         self.rect = self.image.get_rect().inflate(-50, -50)
-        self.rect.center = initial_pos
+        self.rect.center = (x, y)
+        self.distance_traveled = 0
+        self.prev_position = (0, 0)
 
         # координаты тротуара ниже ...
         self.allowed_rects = [
-            pg.Rect(0, 1005, 2000, 155),
-            pg.Rect(0, 252, 2000, 155),
-            pg.Rect(493, 0, 155, 1575),
-            pg.Rect(1306, 0, 155, 1575)
+            pg.Rect(0, 1005, 4000, 155),
+            pg.Rect(0, 248, 4000, 155),
+            pg.Rect(493, 0, 155, 4000),
+            pg.Rect(1306, 0, 155, 4000)
         ]
+
     
     def move(self, vector):
     # Calculate the new position
@@ -54,9 +57,17 @@ class Player1:
                     self.run_images = [self.fix1, self.fix, self.fix2]
                 elif vector[1] > 0:
                     self.run_images = self.run_images_back
-
+                self.prev_pos = (self.rect.x, self.rect.y)
                 self.rect.x += vector[0]
                 self.rect.y += vector[1]
+
+                distance = math.sqrt(
+                    (self.rect.x - self.prev_position[0]) ** 2 +
+                    (self.rect.y - self.prev_position[1]) ** 2
+                )
+
+                # Update total distance traveled
+                self.distance_traveled += distance
                 break
 
 

@@ -17,7 +17,7 @@ def gr_minigame():
     initial_player_x = 250
     initial_player_y = 250
 
-    mcgrandma = MCGrandma(154, 400)
+    mcgrandma = MCGrandma(134, 400)
 
     initial_camera_x = 0
     initial_camera_y = 0
@@ -65,6 +65,7 @@ def gr_minigame():
 
         if vector != [0, 0]:
             camera.move(vector)
+            camera.rect.topleft = mcgrandma.rect.center
             mcgrandma.move(vector)
             mcgrandma.update()
         

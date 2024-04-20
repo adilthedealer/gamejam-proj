@@ -9,25 +9,26 @@ class Bus:
         self.rect.topleft = (x, y)
         self.speed = speed
         self.stopped = True
-        self.stop_coordinates = [(806, 398), (926, 476)]
 
-    def move(self, player):
-        # Вычисляем расстояние до текущей остановки
-        distance_to_stop = math.sqrt(
+    def distance_to_stop(self, player):
+        return math.sqrt(
             (self.rect.centerx - player.rect.x) ** 2 +
             (self.rect.centery - player.rect.y) ** 2
         )
 
-        # Если автобус движется слева направо и достиг координат остановки
-        if self.stopped and self.speed > 0 and distance_to_stop < 100:
+    def move(self, player):
+    # Вычисляем расстояние до текущей остановки
+        dist = self.distance_to_stop(player)
+
+        if self.stopped and self.speed > 0 and dist < 100:
             self.stopped = False
-        elif self.stopped and self.speed < 0 and distance_to_stop < 100:
+        elif self.stopped and self.speed < 0 and dist < 100:
             raise SystemExit
 
         if not self.stopped:
             self.rect.x -= self.speed
             if self.rect.left > 1600:
-                self.rect.right = 0
-
+                self.rect.right = 200
+    
     def draw(self, win, camera):
         win.blit(self.image, (self.rect.x - camera.rect.x, self.rect.y - camera.rect.y))

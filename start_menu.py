@@ -1,91 +1,59 @@
 import pygame
-import subprocess
-from pygame.locals import *
+import subprocess, os
+import time
+import sys
+
+
+def init_display():
+    pygame.init()
+    pygame.display.set_caption("Press Enter to Start")
+    return pygame.display.set_mode((800, 600))
+
 
 def load_assets():
-    game_name = pygame.image.load("images/name_2x.png")
-    game_width = game_name.get_width()
-    font = pygame.font.Font("Pixel_font.ttf", 72)
-    start_text = font.render("Start", True, (255, 255, 255))
-    exit_text = font.render("Exit", True, (255, 255, 255))
-    return game_name, game_width, font, start_text, exit_text
+    game_logo = pygame.image.load("images/name_2x.png").convert_alpha()
+    font = pygame.font.Font("Pixel_font.ttf", 36)
+    start_text = font.render("Press ENTER to Start", True, (255, 255, 255))
+    return game_logo, start_text
 
-def draw_text(screen, text, position, color):
-    screen.blit(text, position, color)
+
+def draw_text(screen, text, position):
+    screen.blit(text, position)
+
 
 def main():
-    # Init pygame
-    pygame.init()
+    screen = init_display()
+    game_logo, start_text = load_assets()
 
-    # Set width and height
-    W = 1000
-    H = 800
+    logo_pos = (screen.get_width() // 2 - game_logo.get_width() // 2, 50)
+    text_pos = (screen.get_width() // 2 - start_text.get_width() // 2, 400)
 
-    # Create game window
-    screen = pygame.display.set_mode((W, H))
-    pygame.display.set_caption("Bus Runner")
-
-    # Set framerate
-    clock = pygame.time.Clock()
-    fps = 60
-
-    game_name, game_width, font, start_text, exit_text = load_assets()
-
-    # Text positions
-    start_text_pos = (W // 2 - start_text.get_width() // 2, H // 2 - start_text.get_height() // 2)
-    exit_text_pos = (W // 2 - exit_text.get_width() // 2, H // 2 - exit_text.get_height() // 2 + start_text.get_height())
-
-    # Text rects
-    start_text_rect = start_text.get_rect(topleft=start_text_pos)
-    exit_text_rect = exit_text.get_rect(topleft=exit_text_pos)
-
-    run = True
-    while run:
-        # Clear the screen
+    running = True
+    while running:
         screen.fill((0, 0, 0))
-        
-        # Calculate position to center the image
-        name_x = (W - game_width) // 2
-        name_y = 0
-        
-        # Blit the image
-        screen.blit(game_name, (name_x, name_y))
-        
-        # Set fps
-        clock.tick(fps)
-        
-        # Event handler
+
+        screen.blit(game_logo, logo_pos)
+        screen.blit(start_text, text_pos)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                run = False
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:  # Left mouse button
-                    if exit_text_rect.collidepoint(event.pos):
-                        run = False  # Close the game when "Exit" text is clicked
-                    elif start_text_rect.collidepoint(event.pos):
-                        # Start the game by running main.py
-                        subprocess.Popen(["python", "main.py"])
-                        pygame.quit()  # Close the current window
+                running = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    screen.blit(pygame.image.load("images/story/level1prologue.png"), (0, 0))
+                    pygame.display.update()
+                    time.sleep(3.5)
+                    screen.blit(pygame.image.load("images/story/level1prologue2.png"), (-200, -200))
+                    pygame.display.update()
+                    time.sleep(2)
+                    subprocess.run(["python", "main1.py"])
+                    running = False
+                    pygame.quit()
 
-        # Get mouse position
-        mouse_pos = pygame.mouse.get_pos()
-
-        # Check if mouse is hovering over start text
-        if start_text_rect.collidepoint(mouse_pos):
-            draw_text(screen, font.render("Start", True, (255, 255, 0)), start_text_pos, None)  # Yellow when hovered
-        else:
-            draw_text(screen, start_text, start_text_pos, None)  # White when not hovered
-
-        # Check if mouse is hovering over exit text
-        if exit_text_rect.collidepoint(mouse_pos):
-            draw_text(screen, font.render("Exit", True, (255, 255, 0)), exit_text_pos, None)  # Yellow when hovered
-        else:
-            draw_text(screen, exit_text, exit_text_pos, None)  # White when not hovered
-
-        # Update the display
-        pygame.display.update()
+        pygame.display.flip()
 
     pygame.quit()
+
 
 if __name__ == "__main__":
     main()
