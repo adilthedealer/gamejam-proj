@@ -61,7 +61,6 @@ def main():
     npcdown = [NPCDown(1750, 1540, 4, "3"), NPCDown(871, 916, 0.5, "2")]
     npcup = [NPCUp(900, 1600, 1.5, "3")]
     npcleft = [NPCLeft(1770, 1499, 2.3, "2"), NPCLeft(1150, 433, 0.5, "")]
-    gra = [Grandma(160, 400)]
     luke = [Luke(1700, 1700), Luke(1730, 1470), Luke(950, 1450)]
     luzha = [Luzha(1500, 1450), Luzha(1430, 1485), Luzha(860, 1485)]
     
@@ -116,9 +115,6 @@ def main():
         for npcl in npcleft:
             npcl.move()
             npcl.update()
-
-        for grandma in gra:
-            grandma.move()
 
         for luk in luke:
             luk.move()
@@ -177,20 +173,6 @@ def main():
                 pg.quit()
                 sys.exit()
 
-        # проработка хитбокса и реакция игрока на столкновение с бабкой (миниигра)
-        for grandma in gra:
-            if grandma.rect.colliderect(player.rect):
-                win.blit(
-                    gameover,
-                    (
-                        (win.get_width() - gameover.get_width()) // 2,
-                        (win.get_height() - gameover.get_height()) // 2,
-                    ),
-                )
-                pg.display.update()
-                time.sleep(4)
-                pg.quit()
-                sys.exit()
 
         for luk in luke:
             if luk.rect.colliderect(player.rect):
@@ -243,9 +225,6 @@ def main():
 
         for npcl in npcleft:
             npcl.draw(win, camera)
-
-        for gr in gra:
-            gr.draw(win, camera)
 
         for lk in luke:
             lk.draw(win, camera)
