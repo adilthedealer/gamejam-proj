@@ -15,7 +15,23 @@ from npcleft import NPCLeft
 from grandma import Grandma
 from luke import Luke
 from luzha import Luzha
+from kapli import Raindrop
 
+def create_raindrops(num_raindrops):
+    raindrops = []
+    for _ in range(num_raindrops):
+        x = rnd.randint(0, 500)  # Adjust this value according to your window size
+        y = rnd.randint(-100, -10)
+        raindrops.append(Raindrop(x, y))
+    return raindrops
+
+def draw_raindrops(raindrops, surface):
+    for raindrop in raindrops:
+        raindrop.draw(surface)
+
+def update_raindrops(raindrops):
+    for raindrop in raindrops:
+        raindrop.fall()
 
 def main():
     pg.init()
@@ -56,14 +72,14 @@ def main():
     ]
     trafficlight = [TrafficLight(background), TrafficLight(background)]
 
-    # Создайте объект NPC
     npc = [NPC(900, 1500, 4, ""), NPC(150, 900, 1, "")]
     npcdown = [NPCDown(1750, 1540, 4, "3"), NPCDown(871, 916, 0.5, "2")]
     npcup = [NPCUp(900, 1600, 1.5, "3")]
     npcleft = [NPCLeft(1770, 1499, 2.3, "2"), NPCLeft(1150, 433, 0.5, "")]
     luke = [Luke(1700, 1700), Luke(1730, 1470), Luke(950, 1450)]
     luzha = [Luzha(1500, 1450), Luzha(1430, 1485), Luzha(860, 1485)]
-    
+
+    raindrops = create_raindrops(100)  # Adjust the number of raindrops as needed
 
     while True:
         for event in pg.event.get():
@@ -125,7 +141,6 @@ def main():
         for tr in trafficlight:
             tr.update()
 
-        # движение автобуса и реакция игрока на хитбокс
         for bus in buses:
             bus.move(player)
             if bus.rect.colliderect(player.rect):
@@ -141,9 +156,8 @@ def main():
                 pg.quit()
                 sys.exit()
 
-        # движение машины и реакция игрока на хитбокс (верхняя улица)
         for car in upper_cars:
-            car.move(trafficlight[0])  # Передаём объект светофора в метод move
+            car.move(trafficlight[0])
             if car.rect.colliderect(player.rect):
                 win.blit(
                     gameover,
@@ -157,9 +171,8 @@ def main():
                 pg.quit()
                 sys.exit()
 
-        # движение машины и реакция игрока на хитбокс (нижняя улица)
         for car in lower_cars:
-            car.move(trafficlight[1])  # Передаём объект светофора в метод move
+            car.move(trafficlight[1])
             if car.rect.colliderect(player.rect):
                 win.blit(
                     gameover,
@@ -172,7 +185,6 @@ def main():
                 time.sleep(4)
                 pg.quit()
                 sys.exit()
-
 
         for luk in luke:
             if luk.rect.colliderect(player.rect):
@@ -198,8 +210,6 @@ def main():
                 player.update()
                 camera.move(vector)
                 pg.time.wait(60)
-
-                    
 
         win.fill((255, 255, 255))
         win.blit(background, (-camera.rect[0], -camera.rect[1]))
@@ -236,8 +246,11 @@ def main():
             tr.draw(background, 225, 450)
             tr.draw(background, 225, 850)
 
+        update_raindrops(raindrops)
+        draw_raindrops(raindrops, win)
+
         pg.display.flip()
         pg.time.wait(30)
 
-
-main()
+if __name__ == "__main__":
+    main()
