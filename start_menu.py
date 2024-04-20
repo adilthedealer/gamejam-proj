@@ -1,4 +1,5 @@
 import pygame
+import subprocess
 from pygame.locals import *
 
 def load_assets():
@@ -61,6 +62,10 @@ def main():
                 if event.button == 1:  # Left mouse button
                     if exit_text_rect.collidepoint(event.pos):
                         run = False  # Close the game when "Exit" text is clicked
+                    elif start_text_rect.collidepoint(event.pos):
+                        # Start the game by running main.py
+                        subprocess.Popen(["python", "main.py"])
+                        pygame.quit()  # Close the current window
 
         # Get mouse position
         mouse_pos = pygame.mouse.get_pos()
