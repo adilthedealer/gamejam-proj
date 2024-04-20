@@ -2,6 +2,7 @@ import pygame as pg
 import sys
 import time
 import random as rnd
+from gr_minigame import gr_minigame
 from player import Player
 from bus import Bus
 from camera import Camera
@@ -13,7 +14,6 @@ from npcdown import NPCDown
 from npcup import NPCUp
 from npcleft import NPCLeft
 from grandma import Grandma
-
 
 def main():
     pg.init()
@@ -60,6 +60,7 @@ def main():
     npcup = [NPCUp(900, 1600, 1.5, "3")]
     npcleft = [NPCLeft(1770, 1499, 2.3, "2"), NPCLeft(1150, 433, 0.5, "")]
     gra = [Grandma(154, 400)]
+    # mc_grandma = MCGrandma(154, 400, 3)
 
     while True:
         for event in pg.event.get():
@@ -169,17 +170,11 @@ def main():
         # проработка хитбокса и реакция игрока на столкновение с бабкой (миниигра)
         for grandma in gra:
             if grandma.rect.colliderect(player.rect):
-                win.blit(
-                    gameover,
-                    (
-                        (win.get_width() - gameover.get_width()) // 2,
-                        (win.get_height() - gameover.get_height()) // 2,
-                    ),
-                )
-                pg.display.update()
-                time.sleep(4)
-                pg.quit()
-                sys.exit()
+                gr_minigame()
+                gra.clear()
+                # mc_grandma.move()
+                # mc_grandma.update()
+                
 
         win.fill((255, 255, 255))
         win.blit(background, (-camera.rect[0], -camera.rect[1]))
