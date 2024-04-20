@@ -33,8 +33,10 @@ class NPCUp:
         self.speed = speed  # Movement speed
 
     def move(self):
-        new_rect = self.rect.copy()  # Initialize new rectangle
+        new_rect = self.rect.copy()  
         new_rect.y -= self.speed
+        if new_rect.y == 881:
+            self.speed = 0
         self.rect = new_rect
         # if any(new_rect.colliderect(rect) for rect in self.allowed_rects):
         #     self.rect = new_rect
