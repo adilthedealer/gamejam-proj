@@ -1,18 +1,20 @@
 import pygame as pg
+import random
 
-class NPCDown:
+class NPCLeft:
     def __init__(self, x, y, speed, n):
         try:
-            self.run_images_down = [
-                pg.transform.scale(pg.image.load("images/npc_front/npc" + n + "_frontstand.png").convert_alpha(), (35, 35)),
-                pg.transform.scale(pg.image.load("images/npc_front/npc" + n + "_front1.png").convert_alpha(), (35, 35)),
-                pg.transform.scale(pg.image.load("images/npc_front/npc" + n + "_front2.png").convert_alpha(), (35, 35))
+            # Load NPC sprites for rightward movement
+            self.run_images_right = [
+                pg.transform.flip(pg.transform.scale(pg.image.load("images/npcside/npc" + n + "_side_stand.png").convert_alpha(), (35, 35)), True, False),
+                pg.transform.flip(pg.transform.scale(pg.image.load("images/npcside/npc" + n + "_side1.png").convert_alpha(), (35, 35)), True, False),
+                pg.transform.flip(pg.transform.scale(pg.image.load("images/npcside/npc" + n + "_side2.png").convert_alpha(), (35, 35)), True, False)
             ]
         except pg.error as e:
             print("Error loading images:", e)
             raise SystemExit
 
-        self.current_run_images = self.run_images_down  
+        self.current_run_images = self.run_images_right  # NPC always moves right
         self.current_run_index = 0
         self.image = self.current_run_images[self.current_run_index]
 
@@ -32,8 +34,8 @@ class NPCDown:
         self.speed = speed  # Movement speed
 
     def move(self):
-        new_rect = self.rect.copy()  # Initialize new rectangle
-        new_rect.y += self.speed
+        new_rect = self.rect.copy() 
+        new_rect.x -= self.speed  
         self.rect = new_rect
         # if any(new_rect.colliderect(rect) for rect in self.allowed_rects):
         #     self.rect = new_rect

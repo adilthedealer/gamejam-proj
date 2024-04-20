@@ -11,7 +11,9 @@ from trafficlight import TrafficLight
 from npc import NPC
 from npcdown import NPCDown
 from npcup import NPCUp
+from npcleft import NPCLeft
 from grandma import Grandma
+
 
 def main():
     pg.init()
@@ -43,7 +45,7 @@ def main():
         player_rect,
     )
 
-    buses = [Bus(0, 450, 8)]
+    buses = [Bus(806, 398, 8)]
     lower_cars = [Lower_car(400, 1200, "blue")]
     upper_cars = [
         Upper_car(0, 530, "yellow"),
@@ -54,8 +56,9 @@ def main():
 
     # Создайте объект NPC
     npc = [NPC(900, 1500, 4, ""), NPC(150, 900, 1, "")]
-    npcdown = [NPCDown(1750, 1540, 4, "3")]
-    npcup = [NPCUp(900, 1600, 1.5, "2")]
+    npcdown = [NPCDown(1750, 1540, 4, "3"), NPCDown(871, 916, 0.5, "2")]
+    npcup = [NPCUp(900, 1600, 1.5, "3")]
+    npcleft = [NPCLeft(1770, 1499, 2.3, "2"), NPCLeft(1150, 433, 0.5, "")]
     gra = [Grandma(887, 1148)]
 
     while True:
@@ -67,7 +70,11 @@ def main():
             elif event.type == pg.KEYDOWN:
                 if event.key == pg.K_SPACE:
                     buses.append(
-                        Bus(rnd.randint(0, 400), rnd.randint(0, 400), rnd.choice([-3, 3]))
+                        Bus(
+                            rnd.randint(0, 400),
+                            rnd.randint(0, 400),
+                            rnd.choice([-3, 3]),
+                        )
                     )
 
         vector = [0, 0]
@@ -101,6 +108,10 @@ def main():
             npcu.move()
             npcu.update()
 
+        for npcl in npcleft:
+            npcl.move()
+            npcl.update()
+
         for grandma in gra:
             grandma.move()
 
@@ -109,7 +120,7 @@ def main():
 
         # движение автобуса и реакция игрока на хитбокс
         for bus in buses:
-            bus.move()
+            bus.move(player)
             if bus.rect.colliderect(player.rect):
                 win.blit(
                     gameover,
@@ -192,6 +203,9 @@ def main():
         for npcu in npcup:
             npcu.draw(win, camera)
 
+        for npcl in npcleft:
+            npcl.draw(win, camera)
+
         for gr in gra:
             gr.draw(win, camera)
 
@@ -201,5 +215,6 @@ def main():
 
         pg.display.flip()
         pg.time.wait(30)
+
 
 main()
