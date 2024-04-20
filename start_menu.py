@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 
 def load_assets():
-    game_name = pygame.image.load('images\name_2x.png')
+    game_name = pygame.image.load("images/name_2x.png")
     game_width = game_name.get_width()
     font = pygame.font.Font("Pixel_font.ttf", 72)
     start_text = font.render("Start", True, (255, 255, 255))
