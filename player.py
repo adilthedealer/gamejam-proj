@@ -70,3 +70,6 @@ class Player:
 
     def draw(self, win, camera):
         win.blit(self.image, (self.rect.x - camera.rect.x, self.rect.y - camera.rect.y))
+
+    def reset_position(self):
+        self.rect.center = (171, 904)

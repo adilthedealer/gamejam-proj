@@ -4,8 +4,8 @@ import time
 class TrafficLight:
     def __init__(self, screen, green_interval=15, yellow_interval=3, red_interval=20):
         self.screen = screen
-        self.green = pg.image.load("images/lights/green_light.png")
-        self.red = pg.image.load("images/lights/red_light.png")
+        self.green = pg.image.load("images/lights/red_light.png")
+        self.red = pg.image.load("images/lights/green_light.png")
         self.yellow = pg.image.load("images/lights/yellow_light.png")
 
         self.lights = [self.green, self.yellow, self.red, self.yellow]
