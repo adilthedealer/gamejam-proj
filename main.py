@@ -2,7 +2,6 @@ import pygame as pg
 import sys
 import time
 import random as rnd
-from gr_minigame import gr_minigame
 from player import Player
 from bus import Bus
 from camera import Camera
@@ -14,11 +13,30 @@ from npcdown import NPCDown
 from npcup import NPCUp
 from npcleft import NPCLeft
 from grandma import Grandma
+from luke import Luke
+from luzha import Luzha
+from kapli import Raindrop
+
+def create_raindrops(num_raindrops):
+    raindrops = []
+    for _ in range(num_raindrops):
+        x = rnd.randint(0, 500)  # Adjust this value according to your window size
+        y = rnd.randint(-100, -10)
+        raindrops.append(Raindrop(x, y))
+    return raindrops
+
+def draw_raindrops(raindrops, surface):
+    for raindrop in raindrops:
+        raindrop.draw(surface)
+
+def update_raindrops(raindrops):
+    for raindrop in raindrops:
+        raindrop.fall()
 
 def main():
     pg.init()
     win = pg.display.set_mode((500, 500))
-    background = pg.image.load("images/BG2.png").convert()
+    background = pg.image.load("images/BGrain.png").convert()
     gameover = pg.image.load("images/wasted.png")
 
     # Adjust the initial position of the player to the center of the window
@@ -54,13 +72,14 @@ def main():
     ]
     trafficlight = [TrafficLight(background), TrafficLight(background)]
 
-    # Создайте объект NPC
     npc = [NPC(900, 1500, 4, ""), NPC(150, 900, 1, "")]
     npcdown = [NPCDown(1750, 1540, 4, "3"), NPCDown(871, 916, 0.5, "2")]
     npcup = [NPCUp(900, 1600, 1.5, "3")]
     npcleft = [NPCLeft(1770, 1499, 2.3, "2"), NPCLeft(1150, 433, 0.5, "")]
-    gra = [Grandma(154, 400)]
-    # mc_grandma = MCGrandma(154, 400, 3)
+    luke = [Luke(1700, 1700), Luke(1730, 1470), Luke(950, 1450)]
+    luzha = [Luzha(1500, 1450), Luzha(1430, 1485), Luzha(860, 1485)]
+
+    raindrops = create_raindrops(100)  # Adjust the number of raindrops as needed
 
     while True:
         for event in pg.event.get():
@@ -83,14 +102,14 @@ def main():
 
         kpressed = pg.key.get_pressed()
         if kpressed[pg.K_UP]:
-            vector[1] -= 3
+            vector[1] -= 2
         elif kpressed[pg.K_DOWN]:
-            vector[1] += 3
+            vector[1] += 2
 
         if kpressed[pg.K_LEFT]:
-            vector[0] -= 3
+            vector[0] -= 2
         elif kpressed[pg.K_RIGHT]:
-            vector[0] += 3
+            vector[0] += 2
 
         if vector != [0, 0]:
             player.move(vector)
@@ -113,13 +132,15 @@ def main():
             npcl.move()
             npcl.update()
 
-        for grandma in gra:
-            grandma.move()
+        for luk in luke:
+            luk.move()
+
+        for luzh in luke:
+            luzh.move()
 
         for tr in trafficlight:
             tr.update()
 
-        # движение автобуса и реакция игрока на хитбокс
         for bus in buses:
             bus.move(player)
             if bus.rect.colliderect(player.rect):
@@ -135,9 +156,8 @@ def main():
                 pg.quit()
                 sys.exit()
 
-        # движение машины и реакция игрока на хитбокс (верхняя улица)
         for car in upper_cars:
-            car.move(trafficlight[0])  
+            car.move(trafficlight[0])
             if car.rect.colliderect(player.rect):
                 win.blit(
                     gameover,
@@ -151,9 +171,8 @@ def main():
                 pg.quit()
                 sys.exit()
 
-        # движение машины и реакция игрока на хитбокс (нижняя улица)
         for car in lower_cars:
-            car.move(trafficlight[1]) 
+            car.move(trafficlight[1])
             if car.rect.colliderect(player.rect):
                 win.blit(
                     gameover,
@@ -167,14 +186,30 @@ def main():
                 pg.quit()
                 sys.exit()
 
-        # проработка хитбокса и реакция игрока на столкновение с бабкой (миниигра)
-        for grandma in gra:
-            if grandma.rect.colliderect(player.rect):
-                gr_minigame()
-                gra.clear()
-                player.reset_position()
-                camera.rect.center = player.rect.center
-                
+        for luk in luke:
+            if luk.rect.colliderect(player.rect):
+                win.blit(
+                    gameover,
+                    (
+                        (win.get_width() - gameover.get_width()) // 2,
+                        (win.get_height() - gameover.get_height()) // 2,
+                    ),
+                )
+                pg.display.update()
+                time.sleep(4)
+                pg.quit()
+                sys.exit()
+
+        for luzh in luzha:
+            if luzh.rect.colliderect(player.rect):
+                vector[1] += 1
+                vector[1] -= 1
+                vector[0] += 1
+                vector[0] -= 1
+                player.move(vector)
+                player.update()
+                camera.move(vector)
+                pg.time.wait(60)
 
         win.fill((255, 255, 255))
         win.blit(background, (-camera.rect[0], -camera.rect[1]))
@@ -201,15 +236,21 @@ def main():
         for npcl in npcleft:
             npcl.draw(win, camera)
 
-        for gr in gra:
-            gr.draw(win, camera)
+        for lk in luke:
+            lk.draw(win, camera)
+
+        for luz in luzha:
+            luz.draw(win, camera)
 
         for tr in trafficlight:
             tr.draw(background, 225, 450)
             tr.draw(background, 225, 850)
 
+        update_raindrops(raindrops)
+        draw_raindrops(raindrops, win)
+
         pg.display.flip()
         pg.time.wait(30)
 
-
-main()
+if __name__ == "__main__":
+    main()
