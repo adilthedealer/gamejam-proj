@@ -15,6 +15,22 @@ from npcup import NPCUp
 from npcleft import NPCLeft
 from grandma import Grandma
 
+def draw_pause_menu(win):
+    # Draw a transparent green overlay
+    overlay = pg.Surface((500, 500), pg.SRCALPHA)
+    overlay.fill((0, 255, 0, 128))  # Transparent green color
+    win.blit(overlay, (0, 0))
+
+    # Draw pause menu options
+    font = pg.font.SysFont(None, 30)
+    text_continue = font.render("Continue", True, (255, 255, 255))
+    text_settings = font.render("Settings", True, (255, 255, 255))
+    text_exit = font.render("Exit", True, (255, 255, 255))
+
+    win.blit(text_continue, (200, 200))
+    win.blit(text_settings, (200, 250))
+    win.blit(text_exit, (200, 300))
+
 def main():
     pg.init()
     win = pg.display.set_mode((500, 500))
@@ -54,13 +70,15 @@ def main():
     ]
     trafficlight = [TrafficLight(background), TrafficLight(background)]
 
-    # Создайте объект NPC
+    # Create NPC objects
     npc = [NPC(900, 1500, 4, ""), NPC(150, 900, 1, "")]
     npcdown = [NPCDown(1750, 1540, 4, "3"), NPCDown(871, 916, 0.5, "2")]
     npcup = [NPCUp(900, 1600, 1.5, "3")]
     npcleft = [NPCLeft(1770, 1499, 2.3, "2"), NPCLeft(1150, 433, 0.5, "")]
     gra = [Grandma(154, 400)]
     # mc_grandma = MCGrandma(154, 400, 3)
+
+    is_paused = False
 
     while True:
         for event in pg.event.get():
@@ -77,6 +95,14 @@ def main():
                             rnd.choice([-3, 3]),
                         )
                     )
+                elif event.key == pg.K_ESCAPE:
+                    # Toggle pause
+                    is_paused = not is_paused
+
+        if is_paused:
+            draw_pause_menu(win)
+            pg.display.flip()
+            continue
 
         vector = [0, 0]
         camera.move(vector)
@@ -119,7 +145,7 @@ def main():
         for tr in trafficlight:
             tr.update()
 
-        # движение автобуса и реакция игрока на хитбокс
+        # Move buses and check collision with player
         for bus in buses:
             bus.move(player)
             if bus.rect.colliderect(player.rect):
@@ -135,9 +161,9 @@ def main():
                 pg.quit()
                 sys.exit()
 
-        # движение машины и реакция игрока на хитбокс (верхняя улица)
+        # Move upper cars and check collision with player
         for car in upper_cars:
-            car.move(trafficlight[0])  # Передаём объект светофора в метод move
+            car.move(trafficlight[0])
             if car.rect.colliderect(player.rect):
                 win.blit(
                     gameover,
@@ -151,9 +177,9 @@ def main():
                 pg.quit()
                 sys.exit()
 
-        # движение машины и реакция игрока на хитбокс (нижняя улица)
+        # Move lower cars and check collision with player
         for car in lower_cars:
-            car.move(trafficlight[1])  # Передаём объект светофора в метод move
+            car.move(trafficlight[1])
             if car.rect.colliderect(player.rect):
                 win.blit(
                     gameover,
@@ -167,14 +193,13 @@ def main():
                 pg.quit()
                 sys.exit()
 
-        # проработка хитбокса и реакция игрока на столкновение с бабкой (миниигра)
+        # Check collision with grandma (mini-game)
         for grandma in gra:
             if grandma.rect.colliderect(player.rect):
                 gr_minigame()
                 gra.clear()
-                # mc_grandma.move()
-                # mc_grandma.update()
-                
+                player.reset_position()
+                camera.rect.center = player.rect.center
 
         win.fill((255, 255, 255))
         win.blit(background, (-camera.rect[0], -camera.rect[1]))
