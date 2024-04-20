@@ -1,13 +1,12 @@
 import pygame as pg
 import sys
-from player import Player
 from camera import Camera
 from player1 import Player1
 
 def main3():
     pg.init()
     win = pg.display.set_mode((500, 500))
-    background = pg.image.load("images/newBG3.png").convert()
+    background = pg.image.load("images/BG3.png").convert()
 
     # Adjust the initial position of the player
     initial_player_x = 250
@@ -54,7 +53,10 @@ def main3():
         if vector != [0, 0]:
             player.move(vector)  # Pass the vector to the move method
             player.update()
-            camera.move(vector)
+
+            # Update camera position to center on the player
+            camera.rect.center = player.rect.center
+            camera.move([0, 0])
 
 
         win.fill((255, 255, 255))
