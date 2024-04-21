@@ -73,6 +73,30 @@ def main3():
             )
             pg.display.update()
             time.sleep(10)
+            win.blit(
+                pg.image.load("images/story/level3epilogue.png"),
+                (
+                    0, 0
+                ),
+            )
+            pg.display.update()
+            time.sleep(10)
+            win.blit(
+                pg.image.load("images/story/level3epilogue2.png"),
+                (
+                    0, 0
+                ),
+            )
+            pg.display.update()
+            time.sleep(10)
+            win.blit(
+                pg.image.load("images/story/level3epilogue3.png"),
+                (
+                    0, 0
+                ),
+            )
+            pg.display.update()
+            time.sleep(10)
             pg.quit()
             sys.exit()
 
