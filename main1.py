@@ -38,10 +38,13 @@ def draw_pause_menu(win):
 
 def main1():
     pg.init()
+    pg.mixer.init()
     win = pg.display.set_mode((500, 500))
     background = pg.image.load("images/BG2.png").convert()
     gameover = pg.image.load("images/wasted.png")
 
+    background_music = pg.mixer.Sound("sounds/bgmusic.mp3")
+    background_music.play(-1) 
     # Adjust the initial position of the player to the center of the window
     initial_player_x = 250
     initial_player_y = 250
@@ -182,6 +185,11 @@ def main1():
         for bus in buses:
             bus.move(player)
             if bus.rect.colliderect(player.rect):
+                background_music.stop()
+                crash = pg.mixer.Sound("sounds/crash.mp3")
+                crash.play()
+                scream = pg.mixer.Sound("sounds/scream.mp3")
+                scream.play()
                 win.blit(
                     gameover,
                     (
@@ -194,6 +202,9 @@ def main1():
                 pg.quit()
                 sys.exit()
             elif not bus.stopped:
+                background_music.stop()
+                bus = pg.mixer.Sound("sounds/bus.mp3")
+                bus.play()
                 current_time = bus.ticks
                 dx = pg.time.get_ticks() - current_time
                 if dx >= 3000:
@@ -222,6 +233,11 @@ def main1():
         for car in upper_cars:
             car.move(trafficlight[0])
             if car.rect.colliderect(player.rect):
+                background_music.stop()
+                crash = pg.mixer.Sound("sounds/crash.mp3")
+                crash.play()
+                scream = pg.mixer.Sound("sounds/scream.mp3")
+                scream.play()
                 win.blit(
                     gameover,
                     (
@@ -238,6 +254,11 @@ def main1():
         for car in lower_cars:
             car.move(trafficlight[1])
             if car.rect.colliderect(player.rect):
+                background_music.stop()
+                crash = pg.mixer.Sound("sounds/crash.mp3")
+                crash.play()
+                scream = pg.mixer.Sound("sounds/scream.mp3")
+                scream.play()
                 win.blit(
                     gameover,
                     (
@@ -301,6 +322,10 @@ def main1():
                         if choice == "Yes":
                             minigame_result = gr_minigame(win)
                             if minigame_result:
+                                background_music.stop()
+                                thx = pg.mixer.Sound("sounds/thank_u.wav")
+                                thx.play()
+                                background_music.play(-1)
                                 gra.clear()
                                 player.reset_position()
                                 camera.rect.center = player.rect.center
