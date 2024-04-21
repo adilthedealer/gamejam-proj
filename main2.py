@@ -52,10 +52,15 @@ def update_raindrops(raindrops):
 
 def main2():
     pg.init()
+    pg.mixer.init()
     win = pg.display.set_mode((500, 500))
     background = pg.image.load("images/BGrain.png").convert()
     gameover = pg.image.load("images/wasted.png")
 
+    background_music = pg.mixer.Sound("sounds/rain.mp3")
+    background_music.play(-1)
+    steps = pg.mixer.Sound("sounds/steps.mp3")
+    steps.play(-1)
     # Adjust the initial position of the player to the center of the window
     initial_player_x = 250
     initial_player_y = 250
@@ -170,6 +175,12 @@ def main2():
         for bus in buses:
             bus.move(player)
             if bus.rect.colliderect(player.rect):
+                background_music.stop()
+                steps.stop()
+                crash = pg.mixer.Sound("sounds/crash.mp3")
+                crash.play()
+                scream = pg.mixer.Sound("sounds/scream.mp3")
+                scream.play()
                 win.blit(
                     gameover,
                     (
@@ -182,9 +193,12 @@ def main2():
                 pg.quit()
                 sys.exit()
             elif not bus.stopped:
+                buss = pg.mixer.Sound("sounds/bus.mp3")
+                buss.play()
                 current_time = bus.ticks
                 dx = pg.time.get_ticks() - current_time
-                if dx >= 3000:
+                if dx >= 6000:
+                    buss.stop()
                     win.blit(
                         pg.image.load("images/story/level2epilogue.png"),
                         (
@@ -209,6 +223,12 @@ def main2():
         for car in upper_cars:
             car.move(trafficlight[0])
             if car.rect.colliderect(player.rect):
+                background_music.stop()
+                steps.stop()
+                crash = pg.mixer.Sound("sounds/crash.mp3")
+                crash.play()
+                scream = pg.mixer.Sound("sounds/scream.mp3")
+                scream.play()
                 win.blit(
                     gameover,
                     (
@@ -224,6 +244,12 @@ def main2():
         for car in lower_cars:
             car.move(trafficlight[1])
             if car.rect.colliderect(player.rect):
+                background_music.stop()
+                steps.stop()
+                crash = pg.mixer.Sound("sounds/crash.mp3")
+                crash.play()
+                scream = pg.mixer.Sound("sounds/scream.mp3")
+                scream.play()
                 win.blit(
                     gameover,
                     (
@@ -238,6 +264,10 @@ def main2():
 
         for luk in luke:
             if luk.rect.colliderect(player.rect):
+                background_music.stop()
+                steps.stop()
+                scream = pg.mixer.Sound("sounds/scream.mp3")
+                scream.play()
                 win.blit(
                     gameover,
                     (
@@ -252,6 +282,12 @@ def main2():
 
         for luzh in luzha:
             if luzh.rect.colliderect(player.rect):
+                background_music.stop()
+                steps.stop()
+                puddl = pg.mixer.Sound("sounds/puddle.mp3")
+                puddl.play()
+                background_music.play(-1)
+                steps.play(-1)
                 vector[1] += 1
                 vector[1] -= 1
                 vector[0] += 1
