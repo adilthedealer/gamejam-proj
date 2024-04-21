@@ -40,6 +40,8 @@ def main():
                 running = False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
+                    birds = pygame.mixer.Sound("sounds/birds.mp3")
+                    birds.play(maxtime=4500)
                     screen.blit(pygame.image.load("images/story/level1prologue.png"), (0, 0))
                     pygame.display.update()
                     time.sleep(3.5)

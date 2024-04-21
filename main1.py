@@ -204,11 +204,12 @@ def main1():
             elif not bus.stopped:
                 background_music.stop()
                 buss = pg.mixer.Sound("sounds/bus.mp3")
-                buss.play()
+                buss.play(maxtime=2500)
+                think = pg.mixer.Sound("sounds/thinking.mp3")
                 current_time = bus.ticks
                 dx = pg.time.get_ticks() - current_time
                 if dx >= 6000:
-                    buss.stop()
+                    think.play()
                     win.blit(
                         pg.image.load("images/story/level1epilogue1.png"),
                         (
@@ -227,6 +228,7 @@ def main1():
                     )
                     time.sleep(14)
                     pg.display.update()
+                    think.stop()
                     subprocess.run(["python", "main2.py"])
                     pg.quit()
 

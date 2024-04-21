@@ -8,12 +8,15 @@ from bus import Bus
 
 def main3():
     pg.init()
+    pg.mixer.init()
     win = pg.display.set_mode((500, 500))
     background = pg.image.load("images/BG3.png").convert_alpha()
     gameover = pg.image.load("images/story/level3story.png")
-    # Adjust the initial position of the player
-    # initial_player_x = 250
-    # initial_player_y = 250
+    
+    background_music = pg.mixer.Sound("sounds/birds.mp3")
+    background_music.play(-1)
+    steps = pg.mixer.Sound("sounds/steps.mp3")
+    steps.play(-1)
 
     player = Player1(50, 1072)
     player.rect.center = (player.rect.centerx, player.rect.centery)
@@ -64,6 +67,10 @@ def main3():
             camera.move([0, 0])
 
         if player.distance_traveled >= 2500000:
+            think = pg.mixer.Sound("sounds/thinking.mp3")
+            background_music.stop()
+            steps.stop()
+            think.play()
             win.blit(
                 gameover,
                 (
@@ -97,6 +104,7 @@ def main3():
             )
             pg.display.update()
             time.sleep(10)
+            think.stop()
             pg.quit()
             sys.exit()
 
