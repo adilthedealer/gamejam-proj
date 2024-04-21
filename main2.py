@@ -195,7 +195,7 @@ def main2():
                     )
                     time.sleep(2)
                     pg.display.update()
-                    subprocess.run(["python", "main2.py"])
+                    subprocess.run(["python", "main3.py"])
                     pg.quit()
 
         for car in upper_cars:
