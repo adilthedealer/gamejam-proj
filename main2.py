@@ -185,7 +185,15 @@ def main2():
                 current_time = bus.ticks
                 dx = pg.time.get_ticks() - current_time
                 if dx >= 3000:
-                    
+                    win.blit(
+                        pg.image.load("images/story/level2epilogue.png"),
+                        (
+                            (win.get_width() - gameover.get_width()) // 2,
+                            (win.get_height() - gameover.get_height()) // 2,
+                        ),
+                    )
+                    time.sleep(5)
+                    pg.display.update()
                     win.blit(
                         pg.image.load("images/levels/level3.png"),
                         (
@@ -193,7 +201,7 @@ def main2():
                             (win.get_height() - gameover.get_height()) // 2,
                         ),
                     )
-                    time.sleep(2)
+                    time.sleep(14)
                     pg.display.update()
                     subprocess.run(["python", "main3.py"])
                     pg.quit()
