@@ -203,11 +203,12 @@ def main1():
                 sys.exit()
             elif not bus.stopped:
                 background_music.stop()
-                bus = pg.mixer.Sound("sounds/bus.mp3")
-                bus.play()
+                buss = pg.mixer.Sound("sounds/bus.mp3")
+                buss.play()
                 current_time = bus.ticks
                 dx = pg.time.get_ticks() - current_time
-                if dx >= 3000:
+                if dx >= 6000:
+                    buss.stop()
                     win.blit(
                         pg.image.load("images/story/level1epilogue1.png"),
                         (
