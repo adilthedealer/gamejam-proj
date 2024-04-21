@@ -35,9 +35,13 @@ def draw_pause_menu(win):
 
 def main1():
     pg.init()
+    pg.mixer.init()
     win = pg.display.set_mode((500, 500))
     background = pg.image.load("images/BG2.png").convert()
     gameover = pg.image.load("images/wasted.png")
+    pg.mixer.Sound("sounds/bgmusic.mp3").play(-1)
+    # pg.mixer.Sound("sounds/bgmusic.mp3").set_volume(0.2)  
+
 
     # Adjust the initial position of the player to the center of the window
     initial_player_x = 250
@@ -179,6 +183,8 @@ def main1():
         for car in upper_cars:
             car.move(trafficlight[0])
             if car.rect.colliderect(player.rect):
+                pg.mixer.music.stop()
+                pg.mixer.Sound("sounds/crash.mp3").play()
                 win.blit(
                     gameover,
                     (
@@ -195,6 +201,8 @@ def main1():
         for car in lower_cars:
             car.move(trafficlight[1])
             if car.rect.colliderect(player.rect):
+                pg.mixer.music.stop()
+                pg.mixer.Sound("sounds/crash.mp3").play()
                 win.blit(
                     gameover,
                     (
