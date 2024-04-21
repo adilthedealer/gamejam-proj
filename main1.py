@@ -4,6 +4,7 @@ import time
 import random as rnd
 import subprocess
 from gr_minigame import gr_minigame
+from pygame.locals import *
 from player import Player
 from bus import Bus
 from camera import Camera
@@ -15,6 +16,7 @@ from npcdown import NPCDown
 from npcup import NPCUp
 from npcleft import NPCLeft
 from grandma import Grandma
+from popupwindow import PopupWindow
 
 
 def draw_pause_menu(win):
@@ -24,7 +26,7 @@ def draw_pause_menu(win):
     win.blit(overlay, (0, 0))
 
     # Draw pause menu options
-    font = pg.font.SysFont(None, 30)
+    font = pg.font.SysFont("Pixel_font.ttf", 30)
     text_continue = font.render("Continue", True, (255, 255, 255))
     text_settings = font.render("Settings", True, (255, 255, 255))
     text_exit = font.render("Exit", True, (255, 255, 255))
@@ -32,6 +34,7 @@ def draw_pause_menu(win):
     win.blit(text_continue, (200, 200))
     win.blit(text_settings, (200, 250))
     win.blit(text_exit, (200, 300))
+
 
 def main1():
     pg.init()
@@ -63,7 +66,7 @@ def main1():
         player_rect,
     )
 
-    buses = [Bus(806, 398, 8)]
+    buses = [Bus(806, 398, 20)]
     lower_cars = [Lower_car(400, 1200, "blue")]
     upper_cars = [
         Upper_car(0, 530, "yellow"),
@@ -78,16 +81,21 @@ def main1():
     npcup = [NPCUp(900, 1600, 1.5, "3")]
     npcleft = [NPCLeft(1770, 1499, 2.3, "2"), NPCLeft(1150, 433, 0.5, "")]
     gra = [Grandma(154, 400)]
-    # mc_grandma = MCGrandma(154, 400, 3)
+    # Timer event type
+    TIMER_EVENT = pg.USEREVENT + 1
+
+    # Set the timer for 3 seconds (3000 milliseconds)
 
     is_paused = False
+    popup = None
 
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 pg.quit()
                 sys.exit()
-
+            elif event.type == TIMER_EVENT:
+                break
             elif event.type == pg.KEYDOWN:
                 if event.key == pg.K_SPACE:
                     buses.append(
@@ -100,6 +108,29 @@ def main1():
                 elif event.key == pg.K_ESCAPE:
                     # Toggle pause
                     is_paused = not is_paused
+            for grandma in gra:
+                if grandma.rect.colliderect(player.rect) and popup is None:
+                    popup = PopupWindow((0, 100))
+
+            # Handle popup events
+            if popup:
+                popup.draw(win)
+                choice = None
+
+                for event in pg.event.get():
+                    if event.type == MOUSEBUTTONDOWN:
+                        choice = popup.handle_event(event)
+                        if choice:
+                            if choice == "Yes":
+                                minigame_result = gr_minigame(win)
+                                if minigame_result:
+                                    gra.clear()
+                                    player.reset_position()
+                                    camera.rect.center = player.rect.center
+                            elif choice == "No":
+                                gra.clear()
+                                camera.rect.center = player.rect.center
+                                popup = None  # Reset popup after choice
 
         if is_paused:
             draw_pause_menu(win)
@@ -162,18 +193,22 @@ def main1():
                 time.sleep(4)
                 pg.quit()
                 sys.exit()
-            elif bus.distance_to_stop(player) <= 65:
-                win.blit(
-                    pg.image.load("images/levels/level2.png"),
-                    (
-                        (win.get_width() - gameover.get_width()) // 2,
-                        (win.get_height() - gameover.get_height()) // 2,
-                    ),
-                )
-                pg.display.update()
-                time.sleep(2)
-                subprocess.run(["python", "main2.py"])
-                pg.quit()
+            elif not bus.stopped:
+                current_time = bus.ticks
+                dx = pg.time.get_ticks() - current_time
+                if dx >= 3000:
+
+                    win.blit(
+                        pg.image.load("images/levels/level2.png"),
+                        (
+                            (win.get_width() - gameover.get_width()) // 2,
+                            (win.get_height() - gameover.get_height()) // 2,
+                        ),
+                    )
+                    time.sleep(2)
+                    pg.display.update()
+                    subprocess.run(["python", "main2.py"])
+                    pg.quit()
 
         # Move upper cars and check collision with player
         for car in upper_cars:
@@ -207,13 +242,12 @@ def main1():
                 pg.quit()
                 sys.exit()
 
-        # Check collision with grandma (mini-game)
+        # Check for collision with grandma
         for grandma in gra:
-            if grandma.rect.colliderect(player.rect):
-                gr_minigame()
-                gra.clear()
-                player.reset_position()
-                camera.rect.center = player.rect.center
+            if grandma.rect.colliderect(player.rect) and popup is None:
+                popup = PopupWindow((0, 100))
+
+
 
         win.fill((255, 255, 255))
         win.blit(background, (-camera.rect[0], -camera.rect[1]))
@@ -246,6 +280,27 @@ def main1():
         for tr in trafficlight:
             tr.draw(background, 225, 450)
             tr.draw(background, 225, 850)
+
+                # Handle popup events
+        if popup:
+            popup.draw(win)
+            choice = None
+
+            for event in pg.event.get():
+                if event.type == MOUSEBUTTONDOWN:
+                    choice = popup.handle_event(event)
+                    if choice:
+                        if choice == "Yes":
+                            minigame_result = gr_minigame(win)
+                            if minigame_result:
+                                gra.clear()
+                                player.reset_position()
+                                camera.rect.center = player.rect.center
+                                popup = None
+                        elif choice == "No":
+                            gra.clear()
+                            camera.rect.center = player.rect.center
+                            popup = None  # Reset popup after choice
 
         pg.display.flip()
         pg.time.wait(30)

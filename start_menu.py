@@ -48,7 +48,7 @@ def main():
                     time.sleep(2)
                     subprocess.run(["python", "main1.py"])
                     running = False
-                    pygame.quit()
+                    # pygame.quit()
 
         pygame.display.flip()
 

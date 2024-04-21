@@ -63,7 +63,7 @@ def main3():
             camera.rect.center = player.rect.center
             camera.move([0, 0])
 
-        if player.distance_traveled >= 2000000:
+        if player.distance_traveled >= 2500000:
             win.blit(
                 gameover,
                 (
@@ -79,8 +79,6 @@ def main3():
         win.fill((255, 255, 255))
         win.blit(background, (-camera.rect.x, -camera.rect.y))
         player.draw(win, camera)
-
-        print(player.distance_traveled)
 
         pg.display.flip()
         clock.tick(30)

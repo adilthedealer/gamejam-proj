@@ -9,6 +9,7 @@ class Bus:
         self.rect.topleft = (x, y)
         self.speed = speed
         self.stopped = True
+        self.ticks = 0
 
     def distance_to_stop(self, player):
         return math.sqrt(
@@ -22,6 +23,7 @@ class Bus:
 
         if self.stopped and self.speed > 0 and dist < 100:
             self.stopped = False
+            self.ticks = pg.time.get_ticks()
         elif self.stopped and self.speed < 0 and dist < 100:
             raise SystemExit
 

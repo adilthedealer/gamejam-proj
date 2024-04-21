@@ -181,18 +181,22 @@ def main2():
                 time.sleep(4)
                 pg.quit()
                 sys.exit()
-            elif bus.distance_to_stop(player) <= 65:
-                win.blit(
-                    pg.image.load("images/levels/level3.png"),
-                    (
-                        (win.get_width() - gameover.get_width()) // 2,
-                        (win.get_height() - gameover.get_height()) // 2,
-                    ),
-                )
-                pg.display.update()
-                time.sleep(2)
-                subprocess.run(["python", "main3.py"])
-                pg.quit()
+            elif not bus.stopped:
+                current_time = bus.ticks
+                dx = pg.time.get_ticks() - current_time
+                if dx >= 3000:
+                    
+                    win.blit(
+                        pg.image.load("images/levels/level3.png"),
+                        (
+                            (win.get_width() - gameover.get_width()) // 2,
+                            (win.get_height() - gameover.get_height()) // 2,
+                        ),
+                    )
+                    time.sleep(2)
+                    pg.display.update()
+                    subprocess.run(["python", "main2.py"])
+                    pg.quit()
 
         for car in upper_cars:
             car.move(trafficlight[0])

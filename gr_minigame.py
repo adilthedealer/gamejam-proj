@@ -2,20 +2,13 @@ import pygame as pg
 import sys
 import time
 from camera import Camera
-from player import Player
 from upper_car import Upper_car
 from mc_grandma import MCGrandma
 from trafficlight import TrafficLight
 
-def gr_minigame():
-    pg.init()
-    win = pg.display.set_mode((500, 500))
+def gr_minigame(win):
     background = pg.image.load("images/BG2.png").convert()
     gameover = pg.image.load("images/wasted.png")
-
-    # Adjust the initial position of the player to the center of the window
-    initial_player_x = 250
-    initial_player_y = 250
 
     mcgrandma = MCGrandma(134, 400)
 
@@ -39,6 +32,7 @@ def gr_minigame():
     trafficlight = [TrafficLight(background), TrafficLight(background)]
 
     exit_minigame = False
+    minigame_success = False
 
     while not exit_minigame:
         for event in pg.event.get():
@@ -69,18 +63,17 @@ def gr_minigame():
             mcgrandma.move(vector)
             mcgrandma.update()
         
-
         win.fill((255, 255, 255))
         win.blit(background, (-camera.rect[0], -camera.rect[1]))
         mcgrandma.draw(win, camera)
 
         if mcgrandma.rect.y >= 884:
             exit_minigame = True
+            minigame_success = True
 
-
-        # движение машины и реакция игрока на хитбокс (верхняя улица)
+        # Move cars and check collision with grandma
         for car in upper_cars:
-            car.move(trafficlight[0])  # Передаём объект светофора в метод move
+            car.move(trafficlight[0])
             if car.rect.colliderect(mcgrandma.rect):
                 win.blit(
                     gameover,
@@ -92,7 +85,6 @@ def gr_minigame():
                 pg.display.update()
                 time.sleep(4)
                 pg.quit()
-                sys.exit()
 
         for tr in trafficlight:
             tr.draw(background, 225, 450)
@@ -103,3 +95,7 @@ def gr_minigame():
 
         pg.display.flip()
         pg.time.wait(30)
+
+    pg.event.clear()
+
+    return minigame_success
