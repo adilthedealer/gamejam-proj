@@ -52,9 +52,11 @@ def update_raindrops(raindrops):
 
 def main2():
     pg.init()
+    pg.mixer.init()
     win = pg.display.set_mode((500, 500))
     background = pg.image.load("images/BGrain.png").convert()
     gameover = pg.image.load("images/wasted.png")
+    pg.mixer.Sound("sounds/rain.mp3").play()
 
     # Adjust the initial position of the player to the center of the window
     initial_player_x = 250
@@ -129,11 +131,13 @@ def main2():
         kpressed = pg.key.get_pressed()
         if kpressed[pg.K_UP]:
             vector[1] -= 2
+
         elif kpressed[pg.K_DOWN]:
             vector[1] += 2
 
         if kpressed[pg.K_LEFT]:
             vector[0] -= 2
+
         elif kpressed[pg.K_RIGHT]:
             vector[0] += 2
 
@@ -197,6 +201,7 @@ def main2():
         for car in upper_cars:
             car.move(trafficlight[0])
             if car.rect.colliderect(player.rect):
+                pg.mixer.Sound("sounds/crash.mp3").play()
                 win.blit(
                     gameover,
                     (
@@ -212,6 +217,7 @@ def main2():
         for car in lower_cars:
             car.move(trafficlight[1])
             if car.rect.colliderect(player.rect):
+                pg.mixer.Sound("sounds/crash.mp3").play()
                 win.blit(
                     gameover,
                     (
@@ -226,6 +232,7 @@ def main2():
 
         for luk in luke:
             if luk.rect.colliderect(player.rect):
+                pg.mixer.Sound("sounds/Scream.mp3").play()
                 win.blit(
                     gameover,
                     (
@@ -237,6 +244,7 @@ def main2():
                 time.sleep(4)
                 pg.quit()
                 sys.exit()
+
 
         for luzh in luzha:
             if luzh.rect.colliderect(player.rect):
