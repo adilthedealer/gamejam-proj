@@ -100,15 +100,15 @@ def main1():
             elif event.type == TIMER_EVENT:
                 break
             elif event.type == pg.KEYDOWN:
-                if event.key == pg.K_SPACE:
-                    buses.append(
-                        Bus(
-                            rnd.randint(0, 400),
-                            rnd.randint(0, 400),
-                            rnd.choice([-3, 3]),
-                        )
-                    )
-                elif event.key == pg.K_ESCAPE:
+                # if event.key == pg.K_SPACE:
+                #     buses.append(
+                #         Bus(
+                #             rnd.randint(0, 400),
+                #             rnd.randint(0, 400),
+                #             rnd.choice([-3, 3]),
+                #         )
+                #     )
+                if event.key == pg.K_ESCAPE:
                     # Toggle pause
                     is_paused = not is_paused
             for grandma in gra:

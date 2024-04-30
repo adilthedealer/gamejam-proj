@@ -9,7 +9,7 @@ class Upper_car:
         self.stopped = False  # Added attribute to track if the car is stopped
         
     def move(self, traffic_light):
-        if traffic_light.current_light_index == 2:  # If the current light is red
+        if traffic_light.current_light_index == 2:  # If the current light is green
             # Check if the car has reached the stop lines
             if 95 <= self.rect.left <= 275:
                 self.stopped = True  # Stop the car
