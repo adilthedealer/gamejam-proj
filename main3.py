@@ -10,6 +10,7 @@ def main3():
     pg.init()
     pg.mixer.init()
     win = pg.display.set_mode((500, 500))
+    pg.display.set_caption("Level 3")
     background = pg.image.load("images/BG3.png").convert_alpha()
     gameover = pg.image.load("images/story/level3story.png")
     

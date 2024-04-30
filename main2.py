@@ -54,6 +54,7 @@ def main2():
     pg.init()
     pg.mixer.init()
     win = pg.display.set_mode((500, 500))
+    pg.display.set_caption("Level 2")
     background = pg.image.load("images/BGrain.png").convert()
     gameover = pg.image.load("images/wasted.png")
 
