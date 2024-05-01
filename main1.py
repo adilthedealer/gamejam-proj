@@ -16,8 +16,52 @@ from npcdown import NPCDown
 from npcup import NPCUp
 from npcleft import NPCLeft
 from grandma import Grandma
-from popupwindow import PopupWindow
 
+
+
+class PopupWindow:
+    def __init__(self, position):
+        self.font = pg.font.Font("Pixel_font.ttf", 24)
+        self.window_color = (0, 0, 0, 150)
+        self.text_color = (255, 255, 255)
+
+        self.message = "Will you help me, an old lady, grandson?"
+        self.options = ["Yes", "No"]
+
+        self.window_rect = pg.Rect(position, (500, 150))
+
+        self.message_surface = self.font.render(self.message, True, self.text_color)
+        self.message_rect = self.message_surface.get_rect(center=(self.window_rect.centerx, self.window_rect.centery - 20))
+
+        self.option_rects = []
+        self.option_texts = []
+        for i, option in enumerate(self.options):
+            text_surface = self.font.render(option, True, self.text_color)
+            text_rect = text_surface.get_rect()
+            text_rect.center = (self.window_rect.centerx + (i - 0.5) * 200, self.window_rect.centery + 20)
+            self.option_texts.append(text_surface)
+            self.option_rects.append(text_rect)
+
+        # Initialize yes and no rectangles
+        self.yes_rect = self.option_rects[0]
+        self.no_rect = self.option_rects[1]
+
+    def draw(self, screen):
+        pg.draw.rect(screen, self.window_color, self.window_rect)
+
+        screen.blit(self.message_surface, self.message_rect)
+
+        for text, rect in zip(self.option_texts, self.option_rects):
+            screen.blit(text, rect)
+
+    def handle_event(self, event):
+        if event.type == MOUSEBUTTONDOWN:
+            mouse_pos = pg.mouse.get_pos()
+            for i, rect in enumerate(self.option_rects):
+                if rect.collidepoint(mouse_pos):
+                    return self.options[i]
+        return None
+    
 
 def draw_pause_menu(win):
     # Draw a transparent green overlay
@@ -95,6 +139,34 @@ def main1():
 
     while True:
         for event in pg.event.get():
+            if event.type == MOUSEBUTTONDOWN:
+                # Get mouse position
+                mouse_pos = pg.mouse.get_pos()
+
+                # Check if mouse position collides with "Yes" option rectangle
+                if popup.yes_rect.collidepoint(mouse_pos):
+                    choice = "Yes"
+                # Check if mouse position collides with "No" option rectangle
+                elif popup.no_rect.collidepoint(mouse_pos):
+                    choice = "No"
+
+                # If a choice is made, perform corresponding action
+                if choice:
+                    if choice == "Yes":
+                        minigame_result = gr_minigame(win)
+                        if minigame_result:
+                            background_music.stop()
+                            thx = pg.mixer.Sound("sounds/thank_u.wav")
+                            thx.play()
+                            background_music.play(-1)
+                            gra.clear()
+                            player.reset_position()
+                            camera.rect.center = player.rect.center
+                            popup = None
+                    elif choice == "No":
+                        gra.clear()
+                        camera.rect.center = player.rect.center
+                        popup = None
             if event.type == pg.QUIT:
                 pg.quit()
                 sys.exit()
@@ -131,10 +203,13 @@ def main1():
                                     gra.clear()
                                     player.reset_position()
                                     camera.rect.center = player.rect.center
+                                    popup = None
+                                    break  # Exit the event loop
                             elif choice == "No":
                                 gra.clear()
                                 camera.rect.center = player.rect.center
                                 popup = None  # Reset popup after choice
+                                break  # Exit the event loop
 
         if is_paused:
             draw_pause_menu(win)
@@ -168,9 +243,6 @@ def main1():
             npcd.move()
             npcd.update()
 
-        for npcu in npcup:
-            npcu.move()
-            npcu.update()
 
         for npcl in npcleft:
             npcl.move()

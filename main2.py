@@ -305,8 +305,6 @@ def main2():
             lk.draw(win, camera)
 
         # Draw other game elements
-        for bus in buses:
-            bus.draw(win, camera)
 
         for car in upper_cars:
             car.draw(win, camera)
@@ -325,6 +323,9 @@ def main2():
         
         # Draw player after Luzha objects
         player.draw(win, camera)
+
+        for bus in buses:
+            bus.draw(win, camera)
 
         for tr in trafficlight:
             tr.draw(background, 225, 450)
