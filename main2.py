@@ -304,8 +304,6 @@ def main2():
         for luz in luzha:
             luz.draw(win, camera)
 
-        # Draw player after Luzha objects
-        player.draw(win, camera)
 
         # Draw other game elements
         for bus in buses:
@@ -323,11 +321,15 @@ def main2():
         for npcd in npcdown:
             npcd.draw(win, camera)
 
+
         for npcl in npcleft:
             npcl.draw(win, camera)
 
         for lk in luke:
             lk.draw(win, camera)
+        
+        # Draw player after Luzha objects
+        player.draw(win, camera)
 
         for tr in trafficlight:
             tr.draw(background, 225, 450)
