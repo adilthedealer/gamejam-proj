@@ -299,8 +299,15 @@ def main2():
 
         win.fill((255, 255, 255))
         win.blit(background, (-camera.rect[0], -camera.rect[1]))
+
+        # Draw Luzha objects first
+        for luz in luzha:
+            luz.draw(win, camera)
+
+        # Draw player after Luzha objects
         player.draw(win, camera)
 
+        # Draw other game elements
         for bus in buses:
             bus.draw(win, camera)
 
@@ -321,9 +328,6 @@ def main2():
 
         for lk in luke:
             lk.draw(win, camera)
-
-        for luz in luzha:
-            luz.draw(win, camera)
 
         for tr in trafficlight:
             tr.draw(background, 225, 450)
