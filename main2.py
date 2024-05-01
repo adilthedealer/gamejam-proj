@@ -99,7 +99,7 @@ def main2():
     npcdown = [NPCDown(1750, 1540, 4, "3"), NPCDown(871, 916, 0.5, "2")]
     npcleft = [NPCLeft(1770, 1499, 2.3, "2"), NPCLeft(1150, 433, 0.5, "")]
     luke = [Luke(1700, 1700), Luke(1730, 1470), Luke(950, 1450)]
-    luzha = [Luzha(1500, 1450), Luzha(1430, 1485), Luzha(860, 1485)]
+    luzha = [Luzha(1500, 1440), Luzha(1430, 1480), Luzha(860, 1470)]
 
     raindrops = create_raindrops(100)  # Adjust the number of raindrops as needed
 
@@ -112,15 +112,15 @@ def main2():
                 sys.exit()
 
             elif event.type == pg.KEYDOWN:
-                if event.key == pg.K_SPACE:
-                    buses.append(
-                        Bus(
-                            rnd.randint(0, 400),
-                            rnd.randint(0, 400),
-                            rnd.choice([-3, 3]),
-                        )
-                    )
-                elif event.key == pg.K_ESCAPE:
+                # if event.key == pg.K_SPACE:
+                #     buses.append(
+                #         Bus(
+                #             rnd.randint(0, 400),
+                #             rnd.randint(0, 400),
+                #             rnd.choice([-3, 3]),
+                #         )
+                #     )
+                if event.key == pg.K_ESCAPE:
                     is_paused = True
 
         if is_paused:
@@ -161,9 +161,6 @@ def main2():
 
         for luk in luke:
             luk.move()
-
-        for luzh in luke:
-            luzh.move()
 
         for tr in trafficlight:
             tr.update()
@@ -263,7 +260,7 @@ def main2():
                 sys.exit()
 
         for luk in luke:
-            if luk.rect.colliderect(player.rect):
+            if luk.get_hitbox().colliderect(player.rect):
                 background_music.stop()
                 steps.stop()
                 scream = pg.mixer.Sound("sounds/scream.mp3")
@@ -281,7 +278,7 @@ def main2():
                 sys.exit()
 
         for luzh in luzha:
-            if luzh.rect.colliderect(player.rect):
+            if luzh.get_hitbox().colliderect(player.rect):
                 background_music.stop()
                 steps.stop()
                 puddl = pg.mixer.Sound("sounds/puddle.mp3")
@@ -304,6 +301,8 @@ def main2():
         for luz in luzha:
             luz.draw(win, camera)
 
+        for lk in luke:
+            lk.draw(win, camera)
 
         # Draw other game elements
         for bus in buses:
@@ -321,12 +320,8 @@ def main2():
         for npcd in npcdown:
             npcd.draw(win, camera)
 
-
         for npcl in npcleft:
             npcl.draw(win, camera)
-
-        for lk in luke:
-            lk.draw(win, camera)
         
         # Draw player after Luzha objects
         player.draw(win, camera)
