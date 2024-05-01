@@ -97,7 +97,6 @@ def main2():
 
     npc = [NPC(900, 1500, 4, ""), NPC(150, 900, 1, "")]
     npcdown = [NPCDown(1750, 1540, 4, "3"), NPCDown(871, 916, 0.5, "2")]
-    npcup = [NPCUp(900, 1600, 1.5, "3")]
     npcleft = [NPCLeft(1770, 1499, 2.3, "2"), NPCLeft(1150, 433, 0.5, "")]
     luke = [Luke(1700, 1700), Luke(1730, 1470), Luke(950, 1450)]
     luzha = [Luzha(1500, 1450), Luzha(1430, 1485), Luzha(860, 1485)]
@@ -155,10 +154,6 @@ def main2():
         for npcd in npcdown:
             npcd.move()
             npcd.update()
-
-        for npcu in npcup:
-            npcu.move()
-            npcu.update()
 
         for npcl in npcleft:
             npcl.move()
@@ -320,9 +315,6 @@ def main2():
 
         for npcd in npcdown:
             npcd.draw(win, camera)
-
-        for npcu in npcup:
-            npcu.draw(win, camera)
 
         for npcl in npcleft:
             npcl.draw(win, camera)
